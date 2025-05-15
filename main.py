@@ -86,4 +86,4 @@ f_vectors = extract_features(a_codes)
 # print(f_vectors[0])
 
 d_vectors = diff_features(f_vectors)
-print(d_vectors)
+# print(d_vectors)

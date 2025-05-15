@@ -1,5 +1,6 @@
-from collections import Counter
 import ast
+
+from collections import Counter
 
 class FeatureVector(ast.NodeVisitor):
     def __init__(self):
