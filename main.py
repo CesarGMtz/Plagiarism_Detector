@@ -20,25 +20,6 @@ def read_zipFile(path):
             raw_codes.append(content)
     
     return raw_codes
-            
-def normalization(raw_codes):
-    normalized_codes = []
-
-    for code in raw_codes:
-        normalized_tokens = []
-
-        byte_stream = BytesIO(code.encode('utf-8')).readline
-        tokens = tokenize.tokenize(byte_stream)
-        
-        for token in tokens:
-            if token.type == TK.NAME and not keyword.iskeyword(token.string):
-                normalized_tokens.append(tokenize.TokenInfo(token.type, 'NAME', token.start, token.end, token.line))
-            else:
-                normalized_tokens.append(token)
-        result = tokenize.untokenize(normalized_tokens).decode('utf-8')
-        normalized_codes.append(result)
-
-    return normalized_codes
     
 def gen_tree(normalized_codes):
     asts_codes = []
@@ -77,9 +58,7 @@ def diff_features(feature_vectors):
 # MAIN
 r_codes = read_zipFile('codes/add.zip')
 
-n_codes = normalization(r_codes)
-
-a_codes = gen_tree(n_codes)
+a_codes = gen_tree(r_codes)
 # print(ast.dump(a_codes[0], indent=4))
 
 f_vectors = extract_features(a_codes)
