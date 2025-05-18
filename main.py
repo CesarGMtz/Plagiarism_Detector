@@ -1,9 +1,5 @@
 import ast
-import keyword
-import token as TK
-import tokenize
 
-from io import BytesIO
 from zipfile import ZipFile
 
 from featureVector import FeatureVector
@@ -56,7 +52,7 @@ def diff_features(feature_vectors):
     return diff_vectors
 
 # MAIN
-r_codes = read_zipFile('codes/add.zip')
+r_codes = read_zipFile('codes/test.zip')
 
 a_codes = gen_tree(r_codes)
 # print(ast.dump(a_codes[0], indent=4))
@@ -65,4 +61,4 @@ f_vectors = extract_features(a_codes)
 # print(f_vectors[0])
 
 d_vectors = diff_features(f_vectors)
-# print(d_vectors)
+print(d_vectors)
