@@ -1,38 +1,48 @@
 import pandas as pd
-import matplotlib.pyplot as plt
-
-from sklearn.metrics import accuracy_score, precision_score
+import joblib
+from sklearn.metrics import accuracy_score, precision_score, classification_report
 from sklearn.model_selection import train_test_split
 from sklearn.naive_bayes import GaussianNB
 from sklearn.preprocessing import StandardScaler
 
-# Lectura de Datos
-setInicial = pd.read_csv('') # path .csv etiquetados
+# === 1. Cargar CSV ===
+df = pd.read_csv("Feature_Vector_CSV.csv")
 
-atributosName = setInicial.columns[:-1].values
-atributoClase = setInicial.columns[-1]
+X = df.drop(columns=["archivo_1", "archivo_2", "plagio_tipo", "tarea"], errors="ignore")
+y = df["plagio_tipo"]
 
-dataGral = setInicial[atributosName]
-claseGral = setInicial[atributoClase]
+# === 2. Separar datos ===
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.30, stratify=y, random_state=42
+)
 
-# Separación de Conjuntos (70% - 30%)
-X = setInicial.drop(columns=['plagio']) # cambiar a nombre de columna final
-y = setInicial['plagio'] # cambiar a nombre de columna final
-
-valoresTrain, valoresTest, clasesTrain, clasesTest= \
-    train_test_split(X, y, test_size=0.30, stratify=y)
-
-# Transformación de Datos
+# === 3. Escalado ===
 scaler = StandardScaler()
+X_train_scaled = scaler.fit_transform(X_train)
+X_test_scaled = scaler.transform(X_test)
 
-valoresTrain_T = scaler.fit_transform(valoresTrain)
-valoresTest_T = scaler.transform(valoresTest)
-
-# Implementación Naive Bayes
+# === 4. Entrenar modelo Naive Bayes ===
 model = GaussianNB()
-model.fit(valoresTrain_T, clasesTrain)
+model.fit(X_train_scaled, y_train)
 
-proba_train = model.predict_proba(valoresTrain_T)
-proba_test = model.predict_proba(valoresTest_T)
+# === 5. Guardar modelo y escalador ===
+joblib.dump(model, "modelo_naivebayes.pkl")
+joblib.dump(scaler, "scaler.pkl")
 
-# ....SIGUE....
+# === 6. Predicciones ===
+y_pred_train = model.predict(X_train_scaled)
+y_pred_test = model.predict(X_test_scaled)
+
+# === 7. Resultados de Entrenamiento ===
+print("\n=== RESULTADOS ENTRENAMIENTO ===")
+print("Precisión:", accuracy_score(y_train, y_pred_train))
+print("Precisión macro:", precision_score(y_train, y_pred_train, average='macro'))
+print("\nReporte de Clasificación:\n")
+print(classification_report(y_train, y_pred_train, target_names=["No Plagio (0)", "Tipo 1", "Tipo 2", "Tipo 3"]))
+
+# === 8. Resultados de Prueba ===
+print("\n=== RESULTADOS PRUEBA ===")
+print("Precisión:", accuracy_score(y_test, y_pred_test))
+print("Precisión macro:", precision_score(y_test, y_pred_test, average='macro'))
+print("\nReporte de Clasificación:\n")
+print(classification_report(y_test, y_pred_test, target_names=["No Plagio (0)", "Tipo 1", "Tipo 2", "Tipo 3"]))
