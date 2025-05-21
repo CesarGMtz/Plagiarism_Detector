@@ -32,7 +32,7 @@ def generate_csv():
     all_rows = []
 
     for BASE_DIR in BASE_DIRS:
-        original_dir = os.path.join(BASE_DIR, "original")
+        original_dir = os.path.join("codes/" + BASE_DIR, "original")
         if not os.path.exists(original_dir):
             continue
         original_files = [f for f in os.listdir(original_dir) if f.endswith(".py")]
@@ -42,7 +42,7 @@ def generate_csv():
             vec_orig = get_feature_vector(path_orig)
 
             for tipo in CATEGORIAS:
-                tipo_path = os.path.join(BASE_DIR, tipo)
+                tipo_path = os.path.join("codes/" + BASE_DIR, tipo)
                 if not os.path.exists(tipo_path):
                     continue
                 if tipo == "noplagio":

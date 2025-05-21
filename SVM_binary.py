@@ -2,7 +2,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
-from sklearn.metrics import accuracy_score, precision_score, classification_report, confusion_matrix
+from sklearn.metrics import accuracy_score, precision_score, recall_score, classification_report, confusion_matrix
 import seaborn as sns
 import matplotlib.pyplot as plt
 
@@ -34,13 +34,15 @@ y_test_pred = svm_model.predict(X_test_scaled)
 
 # Resultados
 print("=== Resultados de Entrenamiento ===")
-print("Precisión:", accuracy_score(y_train, y_train_pred))
+print("Exactitud:", accuracy_score(y_train, y_train_pred))
 print("Precision macro:", precision_score(y_train, y_train_pred, average='macro'))
+print("Recall macro:", recall_score(y_train, y_train_pred, average='macro'))
 print("Reporte de Clasificación:\n", classification_report(y_train, y_train_pred, target_names=["No Plagio", "Plagio"]))
 
 print("\n=== Resultados de Prueba ===")
-print("Precisión:", accuracy_score(y_test, y_test_pred))
+print("Exactitud:", accuracy_score(y_test, y_test_pred))
 print("Precision macro:", precision_score(y_test, y_test_pred, average='macro'))
+print("Recall macro:", recall_score(y_train, y_train_pred, average='macro'))
 print("Reporte de Clasificación:\n", classification_report(y_test, y_test_pred, target_names=["No Plagio", "Plagio"]))
 
 # Matriz de Confusión

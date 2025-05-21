@@ -1,24 +1,11 @@
 
 import ast
-import tokenize
 from collections import Counter
-from io import BytesIO
-
-def count_comments(source_code):
-    try:
-        return sum(
-            1 for tok in tokenize.tokenize(BytesIO(source_code.encode("utf-8")).readline)
-            if tok.type == tokenize.COMMENT
-        )
-    except tokenize.TokenError:
-        return 0
 
 class FeatureVector(ast.NodeVisitor):
     def __init__(self, source_code=None):
         self.features = Counter()
         self.source_code = source_code
-        if source_code:
-            self.features["NumComments"] = count_comments(source_code)
 
     def visit_FunctionDef(self, node):
         self.features["FunctionDef"] += 1
@@ -92,10 +79,6 @@ class FeatureVector(ast.NodeVisitor):
         self.features["Dict"] += 1
         self.generic_visit(node)
 
-    def visit_Set(self, node):
-        self.features["Set"] += 1
-        self.generic_visit(node)
-
     def visit_List(self, node):
         self.features["List"] += 1
         self.generic_visit(node)
@@ -113,13 +96,6 @@ class FeatureVector(ast.NodeVisitor):
             ast.Div: "/",
             ast.FloorDiv: "//",
             ast.Mod: "%",
-            ast.Pow: "**",
-            ast.LShift: "<<",
-            ast.RShift: ">>",
-            ast.BitOr: "|",
-            ast.BitXor: "^",
-            ast.BitAnd: "&",
-            ast.MatMult: "@"
         }.get(op_type, str(op_type))
         self.features[f"BinOp:{op_name}"] += 1
         self.generic_visit(node)

@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
-from sklearn.metrics import accuracy_score, precision_score, classification_report, confusion_matrix
+from sklearn.metrics import accuracy_score, precision_score, recall_score, classification_report, confusion_matrix
 import joblib
 
 # 1. Cargar el CSV y filtra solo los casos de plagio (tipo 1, 2, 3) 
@@ -36,13 +36,15 @@ y_train_pred = model.predict(X_train_scaled)
 y_test_pred = model.predict(X_test_scaled)
 
 print("=== Resultados de Entrenamiento ===")
-print("Precisión:", accuracy_score(y_train, y_train_pred))
+print("Exactitud:", accuracy_score(y_train, y_train_pred))
 print("Precisión macro:", precision_score(y_train, y_train_pred, average='macro'))
+print("Recall macro:", recall_score(y_train, y_train_pred, average='macro'))
 print("Reporte de Clasificación:\n", classification_report(y_train, y_train_pred, target_names=["Tipo 1", "Tipo 2", "Tipo 3"]))
 
 print("\n=== Resultados de Prueba ===")
-print("Precisión:", accuracy_score(y_test, y_test_pred))
+print("Exactitud:", accuracy_score(y_test, y_test_pred))
 print("Precisión macro:", precision_score(y_test, y_test_pred, average='macro'))
+print("Recall macro:", recall_score(y_train, y_train_pred, average='macro'))
 print("Reporte de Clasificación:\n", classification_report(y_test, y_test_pred, target_names=["Tipo 1", "Tipo 2", "Tipo 3"]))
 
 #  8. Matriz de Confusión para ver cuántos hay de cada tipo
