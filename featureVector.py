@@ -192,6 +192,7 @@ class FeatureVector(ast.NodeVisitor):
             self.features["func_line_ratio_diff"] = abs(self.features["func_line_ratio_1"] - self.features["func_line_ratio_2"])
             # Similaridad de flujo de control
             self.features["control_flow_sim"] = control_flow_similarity(self.tree1, self.tree2)
+            # Similaridad en la secuencia de llamadas a input y print
 
         return self.features
 

@@ -7,7 +7,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import joblib
 
-# 1. Cargar el CSV y filtrar solo casos de plagio (1, 2, 3)
+# 1. Carga el CSV y filtrar solo casos de plagio (1, 2, 3)
 df = pd.read_csv("Feature_Vector_CSV.csv")
 df_plagio = df[df["plagio_tipo"] != 0]  # Excluye tipo 0 (no plagio)
 

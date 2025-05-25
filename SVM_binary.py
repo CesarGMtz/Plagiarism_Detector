@@ -7,7 +7,7 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import joblib
 
-# 1. Cargar el CSV 
+# 1. Carga el CSV 
 df = pd.read_csv("Feature_Vector_CSV.csv")
 
 # 2. Convertir a binario: 0 = no plagio, 1 = cualquier tipo de plagio 

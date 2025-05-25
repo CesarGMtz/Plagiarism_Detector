@@ -1,16 +1,35 @@
-def obtener_numero_positivo(texto):
-    while True:
-        valor = input(texto)
-        if valor.replace('.', '', 1).isdigit() and float(valor) > 0:
-            return float(valor)
-        print("Ingresa un número mayor que cero.")
+def calcular_area_rectangulo(base, altura):
+    return base * altura
 
-def area_triangulo(b, h):
-    return 0.5 * b * h
+def calcular_area_circulo(radio):
+    pi = 3.1416
+    return pi * radio * radio
 
-print("Área de un triángulo")
-b = obtener_numero_positivo("Base: ")
-h = obtener_numero_positivo("Altura: ")
-resultado = area_triangulo(b, h)
-print("El área es: {:.2f}".format(resultado))
+def calcular_area_triangulo(base, altura):
+    return (base * altura) / 2
+
+def menu():
+    print("1. Rectángulo")
+    print("2. Círculo")
+    print("3. Triángulo")
+
+def ejecutar():
+    menu()
+    opcion = int(input("Elige una figura: "))
+    if opcion == 1:
+        b = float(input("Base: "))
+        h = float(input("Altura: "))
+        print("Área:", calcular_area_rectangulo(b, h))
+    elif opcion == 2:
+        r = float(input("Radio: "))
+        print("Área:", calcular_area_circulo(r))
+    elif opcion == 3:
+        b = float(input("Base: "))
+        h = float(input("Altura: "))
+        print("Área:", calcular_area_triangulo(b, h))
+    else:
+        print("Opción inválida")
+
+if __name__ == "__main__":
+    ejecutar()
 

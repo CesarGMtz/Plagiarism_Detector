@@ -7,7 +7,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import accuracy_score, precision_score, classification_report, confusion_matrix, f1_score
 import joblib
 
-#  1. Cargar el CSV y filtrar solo casos con plagio (tipo 1, 2, 3)
+#  1. Carga el CSV y filtrar solo casos con plagio (tipo 1, 2, 3)
 df = pd.read_csv("Feature_Vector_CSV.csv")
 df_plagio = df[df["plagio_tipo"] != 0]
 
