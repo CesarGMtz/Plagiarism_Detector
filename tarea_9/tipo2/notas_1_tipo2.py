@@ -1,49 +1,51 @@
-def mostrar_menu():
-    print("\n📝 Menú de Notas")
-    print("1. Añadir")
-    print("2. Ver")
-    print("3. Eliminar")
-    print("4. Salir")
+def menu():
+    print("\nBloc de Notas")
+    print("1. Nueva nota")
+    print("2. Ver todas")
+    print("3. Eliminar una")
+    print("4. Cerrar")
 
-def agregar(lista):
-    texto = input("Escribe tu nota: ")
-    index = len(lista) + 1
-    lista.append((index, texto))
-    print(f"Nota #{index} añadida.")
+def nueva(notas):
+    nueva_nota = input("Escribe tu nota: ")
+    notas.append(nueva_nota)
+    print("Nota añadida.")
 
-def ver(lista):
-    if not lista:
-        print("No hay notas.")
+def listar(notas):
+    if not notas:
+        print("Sin notas registradas.")
     else:
-        for idx, txt in lista:
-            print(f"[{idx}] {txt}")
+        for idx, contenido in enumerate(notas, start=1):
+            print(f"{idx}. {contenido}")
 
-def eliminar(lista):
-    ver(lista)
-    if lista:
+def eliminar(notas):
+    listar(notas)
+    if notas:
         try:
-            eliminar_id = int(input("ID a eliminar: "))
-            lista[:] = [(i, t) for i, t in lista if i != eliminar_id]
-            print("Nota eliminada.")
-        except:
-            print("Entrada inválida.")
+            pos = int(input("¿Qué número de nota eliminar? ")) - 1
+            if 0 <= pos < len(notas):
+                removida = notas.pop(pos)
+                print(f"Nota eliminada: {removida}")
+            else:
+                print("Número fuera de rango.")
+        except ValueError:
+            print("Entrada no válida.")
 
-def main():
-    notas = []
+def iniciar():
+    lista = []
     while True:
-        mostrar_menu()
-        op = input("Selecciona: ")
-        if op == '1':
-            agregar(notas)
-        elif op == '2':
-            ver(notas)
-        elif op == '3':
-            eliminar(notas)
-        elif op == '4':
-            print("Saliendo.")
+        menu()
+        eleccion = input("Elige una opción: ")
+        if eleccion == '1':
+            nueva(lista)
+        elif eleccion == '2':
+            listar(lista)
+        elif eleccion == '3':
+            eliminar(lista)
+        elif eleccion == '4':
+            print("Cerrando aplicación de notas...")
             break
         else:
-            print("Opción no válida.")
+            print("Opción incorrecta.")
 
-main()
+iniciar()
 

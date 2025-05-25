@@ -1,33 +1,35 @@
-def mcd_euclides(a, b):
+def calcular_mcd(a, b):
     while b:
         a, b = b, a % b
     return a
 
-def mcm_euclides(a, b):
-    return a * b // mcd_euclides(a, b)
+def calcular_mcm(a, b):
+    return a * b // calcular_mcd(a, b)
 
-def opciones():
-    return {
-        '1': lambda x, y: print("MCD:", mcd_euclides(x, y)),
-        '2': lambda x, y: print("MCM:", mcm_euclides(x, y)),
-        '3': lambda x, y: (print("MCD:", mcd_euclides(x, y)), print("MCM:", mcm_euclides(x, y)))
-    }
+def mostrar_menu():
+    print("Elige una opción:")
+    print("1 - Solo MCD")
+    print("2 - Solo MCM")
+    print("3 - MCD y MCM")
 
-def main():
-    print("Selecciona:")
-    print("1. Solo MCD")
-    print("2. Solo MCM")
-    print("3. Ambos")
+def ejecutar():
+    mostrar_menu()
     try:
-        opt = input("Opción: ")
+        opcion = input("Tu opción: ")
         n1 = int(input("Número 1: "))
         n2 = int(input("Número 2: "))
-        accion = opciones().get(opt)
-        if accion:
-            accion(n1, n2)
-        else:
-            print("Opción inválida.")
-    except:
-        print("Error en los datos ingresados.")
 
-main()
+        if opcion == '1':
+            print("Resultado MCD =", calcular_mcd(n1, n2))
+        elif opcion == '2':
+            print("Resultado MCM =", calcular_mcm(n1, n2))
+        elif opcion == '3':
+            print("MCD:", calcular_mcd(n1, n2))
+            print("MCM:", calcular_mcm(n1, n2))
+        else:
+            print("Opción no válida.")
+    except:
+        print("Entrada inválida.")
+
+ejecutar()
+

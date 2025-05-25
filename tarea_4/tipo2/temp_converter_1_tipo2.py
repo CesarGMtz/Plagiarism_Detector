@@ -1,17 +1,19 @@
-def convertir_desde_celsius(c):
-    return {
-        "F": c * 9/5 + 32,
-        "K": c + 273.15
-    }
+def convertir_a_fahrenheit(grados):
+    return grados * 9 / 5 + 32
 
-def iniciar_conversion():
+def convertir_a_kelvin(grados):
+    return grados + 273.15
+
+def iniciar():
     try:
-        grados = float(input("Introduce temperatura en Celsius: "))
-        resultado = convertir_desde_celsius(grados)
-        for unidad, valor in resultado.items():
-            print(f"{grados}°C son {valor:.2f}°{unidad}")
-    except ValueError:
-        print("Error: entrada no válida.")
+        entrada = float(input("Temperatura en Celsius: "))
+        faren = convertir_a_fahrenheit(entrada)
+        kel = convertir_a_kelvin(entrada)
 
-iniciar_conversion()
+        print(f"{entrada}°C = {faren:.2f}°F")
+        print(f"{entrada}°C = {kel:.2f}°K")
+    except ValueError:
+        print("Error: ingresa un valor numérico.")
+
+iniciar()
 

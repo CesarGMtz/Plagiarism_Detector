@@ -1,22 +1,25 @@
-def encontrar_mcd(x, y):
-    return x if y == 0 else encontrar_mcd(y, x % y)
+def obtener_mcd(x, y):
+    if y == 0:
+        return x
+    return obtener_mcd(y, x % y)
 
-def encontrar_mcm(x, y):
-    return abs(x * y) // encontrar_mcd(x, y)
+def obtener_mcm(x, y):
+    return abs(x * y) // obtener_mcd(x, y)
 
-def solicitar_valor(texto):
+def pedir_entero(texto):
     while True:
-        entrada = input(texto)
-        if entrada.isdigit():
-            return int(entrada)
-        print("Entrada no válida.")
+        try:
+            return int(input(texto))
+        except:
+            print("Entrada no válida.")
 
-def principal():
-    print("Herramienta para MCD y MCM")
-    val1 = solicitar_valor("Introduce número A: ")
-    val2 = solicitar_valor("Introduce número B: ")
+def ejecutar():
+    print("=== Cálculo de MCD y MCM ===")
+    a = pedir_entero("Ingresa primer número: ")
+    b = pedir_entero("Ingresa segundo número: ")
 
-    print("MCD:", encontrar_mcd(val1, val2))
-    print("MCM:", encontrar_mcm(val1, val2))
+    print("Resultado MCD:", obtener_mcd(a, b))
+    print("Resultado MCM:", obtener_mcm(a, b))
 
-principal()
+ejecutar()
+

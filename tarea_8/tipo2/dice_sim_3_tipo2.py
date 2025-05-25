@@ -1,23 +1,27 @@
 import random
 
-def contar_dados(veces):
-    datos = [0] * 6
-    for _ in range(veces):
-        cara = random.randint(1, 6)
-        datos[cara - 1] += 1
-    return datos
+def tirar_dado():
+    return random.randint(1, 6)
 
-def mostrar(datos):
-    print("\nResumen:")
-    total = sum(datos)
-    for i, cant in enumerate(datos, 1):
-        porc = (cant / total) * 100
-        print(f"{i} → {cant} veces ({porc:.2f}%)")
+def simular_tiros(repeticiones):
+    registros = [0] * 6
+    for _ in range(repeticiones):
+        lado = tirar_dado()
+        registros[lado - 1] += 1
+    return registros
 
-def ejecutar():
-    intentos = int(input("Ingresa el número de lanzamientos: "))
-    datos = contar_dados(intentos)
-    mostrar(datos)
+def imprimir_histograma(frecuencias):
+    total = sum(frecuencias)
+    print("\nResumen de lanzamientos:")
+    for idx, cantidad in enumerate(frecuencias):
+        porc = (cantidad / total) * 100
+        barras = '█' * (cantidad // 5)
+        print(f"{idx + 1}: {cantidad:>3} → {barras} ({porc:.1f}%)")
 
-ejecutar()
+def iniciar():
+    intentos = int(input("¿Cuántos lanzamientos? "))
+    conteos = simular_tiros(intentos)
+    imprimir_histograma(conteos)
+
+iniciar()
 

@@ -1,26 +1,27 @@
 import string
 
-def checar_contraseña(pwd):
-    condiciones = [
-        ("longitud", lambda s: len(s) >= 8),
-        ("mayúscula", lambda s: any(c.isupper() for c in s)),
-        ("minúscula", lambda s: any(c.islower() for c in s)),
-        ("número", lambda s: any(c.isdigit() for c in s)),
-        ("símbolo", lambda s: any(c in string.punctuation for c in s))
-    ]
-    
-    errores = [nombre for nombre, regla in condiciones if not regla(pwd)]
-    return errores
+class RevisorClave:
+    def __init__(self, texto):
+        self.texto = texto
 
-def principal():
-    clave = input("Clave a verificar: ")
-    fallos = checar_contraseña(clave)
-    if not fallos:
-        print("Clave segura.")
-    else:
-        print("Faltan los siguientes requisitos:")
-        for f in fallos:
-            print(f"- {f}")
+    def validar(self):
+        if len(self.texto) < 8:
+            return False, "Debe contener al menos 8 caracteres."
+        if not any(c.isupper() for c in self.texto):
+            return False, "Falta una letra en mayúscula."
+        if not any(c.islower() for c in self.texto):
+            return False, "Falta una letra en minúscula."
+        if not any(c.isdigit() for c in self.texto):
+            return False, "Debe incluir un número."
+        if not any(c in string.punctuation for c in self.texto):
+            return False, "Se requiere un símbolo especial."
+        return True, "Clave aceptada."
 
-principal()
+def ejecutar():
+    clave = input("Ingresa tu contraseña: ")
+    revisor = RevisorClave(clave)
+    ok, mensaje = revisor.validar()
+    print(mensaje)
+
+ejecutar()
 

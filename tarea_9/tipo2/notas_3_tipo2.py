@@ -1,53 +1,58 @@
 import os
 
-ARCHIVO = "registro_notas.txt"
+ARCHIVO = "notas.txt"
 
-def cargar():
-    if os.path.exists(ARCHIVO):
-        with open(ARCHIVO, "r", encoding="utf-8") as f:
-            return f.read().splitlines()
-    return []
+def leer_archivo():
+    if not os.path.exists(ARCHIVO):
+        return []
+    with open(ARCHIVO, "r", encoding="utf-8") as archivo:
+        return [linea.strip() for linea in archivo.readlines()]
 
-def guardar(notas):
-    with open(ARCHIVO, "w", encoding="utf-8") as f:
-        for n in notas:
-            f.write(n + "\n")
+def escribir_archivo(lista):
+    with open(ARCHIVO, "w", encoding="utf-8") as archivo:
+        for entrada in lista:
+            archivo.write(entrada + "\n")
 
-def añadir(notas):
-    nueva = input("Nota: ")
-    notas.append(nueva)
-    guardar(notas)
+def nueva_nota(lista):
+    texto = input("Escribe una nueva nota: ")
+    lista.append(texto)
+    escribir_archivo(lista)
+    print("Nota guardada correctamente.")
 
-def mostrar(notas):
-    for i, n in enumerate(notas, 1):
-        print(f"{i}) {n}")
+def ver_notas(lista):
+    print("\nNotas guardadas:")
+    for idx, contenido in enumerate(lista, 1):
+        print(f"{idx}. {contenido}")
 
-def borrar(notas):
-    mostrar(notas)
+def quitar_nota(lista):
+    ver_notas(lista)
     try:
-        idx = int(input("Eliminar número: ")) - 1
-        if 0 <= idx < len(notas):
-            del notas[idx]
-            guardar(notas)
-    except:
-        print("Error.")
-
-def main():
-    notas = cargar()
-    acciones = {
-        '1': añadir,
-        '2': mostrar,
-        '3': borrar,
-    }
-    while True:
-        print("\n1. Agregar 2. Ver 3. Borrar 4. Salir")
-        op = input("Selecciona: ")
-        if op == '4':
-            break
-        elif op in acciones:
-            acciones[op](notas)
+        seleccion = int(input("Número de nota a eliminar: ")) - 1
+        if 0 <= seleccion < len(lista):
+            del lista[seleccion]
+            escribir_archivo(lista)
+            print("Nota eliminada.")
         else:
-            print("Inválido.")
+            print("Índice inválido.")
+    except ValueError:
+        print("Entrada no válida.")
 
-main()
+def menu_notas():
+    lista = leer_archivo()
+    while True:
+        print("\nOpciones: 1) Agregar  2) Ver  3) Eliminar  4) Salir")
+        eleccion = input("Tu elección: ")
+        if eleccion == '1':
+            nueva_nota(lista)
+        elif eleccion == '2':
+            ver_notas(lista)
+        elif eleccion == '3':
+            quitar_nota(lista)
+        elif eleccion == '4':
+            print("Saliendo del gestor de notas.")
+            break
+        else:
+            print("Opción no reconocida.")
+
+menu_notas()
 

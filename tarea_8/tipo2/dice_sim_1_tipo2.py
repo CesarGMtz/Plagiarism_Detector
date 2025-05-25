@@ -1,25 +1,24 @@
 import random
+from collections import Counter
 
-def lanzar_dados(n):
-    resultados = {i: 0 for i in range(1, 7)}
-    for _ in range(n):
-        cara = random.randint(1, 6)
-        resultados[cara] += 1
-    return resultados
+def simular_dados(repeticiones):
+    tiradas = [random.randint(1, 6) for _ in range(repeticiones)]
+    return Counter(tiradas)
 
-def graficar(conteo):
-    print("\nDistribución de Resultados:")
-    for valor, rep in conteo.items():
-        escala = rep // 5
-        print(f"{valor}: {'=' * escala} ({rep})")
+def imprimir_resultados(frecuencias):
+    print("\nResumen de lanzamientos:")
+    for cara in range(1, 7):
+        total = frecuencias.get(cara, 0)
+        print(f"{cara}: {'#' * total} ({total})")
 
-def principal():
+def ejecutar():
+    print("🎲 Lanzamiento de dado 🎲")
     try:
-        n = int(input("¿Cuántos lanzamientos de dado deseas hacer? "))
-        resultados = lanzar_dados(n)
-        graficar(resultados)
-    except ValueError:
-        print("Por favor, introduce un número entero válido.")
+        veces = int(input("¿Cuántos lanzamientos deseas realizar? "))
+        resultados = simular_dados(veces)
+        imprimir_resultados(resultados)
+    except:
+        print("Entrada inválida.")
 
-principal()
+ejecutar()
 

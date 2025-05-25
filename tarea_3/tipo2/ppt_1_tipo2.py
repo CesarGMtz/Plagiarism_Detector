@@ -1,26 +1,24 @@
 import random
 
-def resultado(jugador, cpu):
-    if jugador == cpu:
-        return "Empate"
-    elif (jugador == 'piedra' and cpu == 'tijera') or \
-         (jugador == 'papel' and cpu == 'piedra') or \
-         (jugador == 'tijera' and cpu == 'papel'):
-        return "Ganaste"
-    else:
-        return "Perdiste"
-
-def main():
+def jugar_partida():
     elecciones = ['piedra', 'papel', 'tijera']
-    usuario = input("Escoge piedra, papel o tijera: ").lower()
+    eleccion_pc = random.choice(elecciones)
+    eleccion_jugador = input("Tu jugada (piedra/papel/tijera): ").lower()
 
-    if usuario not in elecciones:
-        print("Entrada inválida")
+    if eleccion_jugador not in elecciones:
+        print("¡Esa no es una opción válida!")
         return
 
-    maquina = random.choice(elecciones)
-    print(f"La máquina eligió: {maquina}")
-    print(resultado(usuario, maquina))
+    print("La computadora eligió:", eleccion_pc)
 
-main()
+    if eleccion_jugador == eleccion_pc:
+        print("Empate.")
+    elif (eleccion_jugador == 'piedra' and eleccion_pc == 'tijera') or \
+         (eleccion_jugador == 'papel' and eleccion_pc == 'piedra') or \
+         (eleccion_jugador == 'tijera' and eleccion_pc == 'papel'):
+        print("Ganaste.")
+    else:
+        print("Has perdido.")
+
+jugar_partida()
 

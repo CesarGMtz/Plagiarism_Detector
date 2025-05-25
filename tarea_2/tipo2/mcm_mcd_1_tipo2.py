@@ -1,25 +1,27 @@
-def maximo_comun_divisor(n1, n2):
-    while n2:
-        n1, n2 = n2, n1 % n2
-    return n1
+def mcd(a, b):
+    while b:
+        a, b = b, a % b
+    return a
 
-def minimo_comun_multiplo(n1, n2):
-    return abs(n1 * n2) // maximo_comun_divisor(n1, n2)
+def mcm(a, b):
+    return abs(a * b) // mcd(a, b)
 
-def leer_entrada():
+def leer_datos():
     try:
-        a = int(input("Ingresa el primer número: "))
-        b = int(input("Ingresa el segundo número: "))
-        return a, b
-    except:
-        print("Entrada inválida")
+        n1 = int(input("Número 1: "))
+        n2 = int(input("Número 2: "))
+        return n1, n2
+    except ValueError:
+        print("Error: entrada inválida.")
         return None, None
 
-def iniciar():
-    print("Programa para calcular MCD y MCM")
-    num1, num2 = leer_entrada()
-    if num1 is not None and num2 is not None:
-        print("MCD:", maximo_comun_divisor(num1, num2))
-        print("MCM:", minimo_comun_multiplo(num1, num2))
+def main():
+    print("== MCD y MCM con algoritmo de Euclides ==")
+    n1, n2 = leer_datos()
+    if n1 is None or n2 is None:
+        return
+    print(f"El MCD de {n1} y {n2} es {mcd(n1, n2)}")
+    print(f"El MCM de {n1} y {n2} es {mcm(n1, n2)}")
 
-iniciar()
+main()
+

@@ -1,31 +1,20 @@
-def cesar(texto, shift):
-    salida = ""
-    for l in texto:
-        if l.isalpha():
-            base = ord('A') if l.isupper() else ord('a')
-            nueva = chr((ord(l) - base + shift) % 26 + base)
-            salida += nueva
-        else:
-            salida += l
-    return salida
+def limpiar(cadena):
+    return ''.join(ch for ch in cadena if ch.isprintable())
 
-def consola():
-    comandos = {
-        '1': lambda t, s: cesar(t, s),
-        '2': lambda t, s: cesar(t, -s)
-    }
+def aplicar_cesar(cadena, paso):
+    cadena = limpiar(cadena)
+    return ''.join(
+        chr((ord(ch) - base + paso) % 26 + base) if ch.isalpha() else ch
+        for ch in cadena
+        for base in [ord('A') if ch.isupper() else ord('a')] if ch.isalpha()
+    )
 
-    while True:
-        print("\n1. Cifrar\n2. Descifrar\n3. Salir")
-        op = input("Opción: ")
-        if op == '3':
-            break
-        elif op in comandos:
-            msg = input("Texto: ")
-            key = int(input("Desplazamiento: "))
-            print("Resultado:", comandos[op](msg, key))
-        else:
-            print("Inválido.")
+def sesion():
+    original = input("Introduce el mensaje: ")
+    desplazamiento = int(input("Cantidad de desplazamiento: "))
+    operacion = input("¿Cifrar (C) o Descifrar (D)?: ").lower()
+    desplazamiento = -desplazamiento if operacion == 'd' else desplazamiento
+    print("Texto final:", aplicar_cesar(original, desplazamiento))
 
-consola()
+sesion()
 

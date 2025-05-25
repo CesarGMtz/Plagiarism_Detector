@@ -1,6 +1,6 @@
-
 import ast
 import tokenize
+import difflib
 from collections import Counter
 from io import BytesIO
 
@@ -13,139 +13,191 @@ def count_comments(source_code):
     except tokenize.TokenError:
         return 0
 
+def extract_variable_names(tree):
+    return {node.id for node in ast.walk(tree) if isinstance(node, ast.Name)}
+
+def variable_name_similarity(tree1, tree2):
+    names1 = extract_variable_names(tree1)
+    names2 = extract_variable_names(tree2)
+    intersection = names1.intersection(names2)
+    union = names1.union(names2)
+    jaccard = len(intersection) / len(union) if union else 1.0
+    overlap = len(intersection)
+    total_diff = len(union) - overlap
+    return {
+        "var_name_jaccard": jaccard,
+        "var_name_overlap": overlap,
+        "var_name_diff": total_diff
+    }
+
+def extract_literals(tree):
+    return {n.value for n in ast.walk(tree) if isinstance(n, ast.Constant)}
+
+def extract_call_names(tree):
+    return [n.func.id for n in ast.walk(tree) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name)]
+
+def ngram_similarity(tokens1, tokens2, n=3):
+    def get_ngrams(tokens, n):
+        return set(tuple(tokens[i:i+n]) for i in range(len(tokens) - n + 1))
+    ngrams1 = get_ngrams(tokens1, n)
+    ngrams2 = get_ngrams(tokens2, n)
+    intersection = ngrams1.intersection(ngrams2)
+    union = ngrams1.union(ngrams2)
+    return len(intersection) / len(union) if union else 1.0
+
+def lexical_similarity(code1, code2):
+    try:
+        tokens1 = [
+            tok.string for tok in tokenize.tokenize(BytesIO(code1.encode("utf-8")).readline)
+            if tok.type not in {tokenize.ENCODING, tokenize.NEWLINE, tokenize.NL, tokenize.INDENT, tokenize.DEDENT}
+        ]
+        tokens2 = [
+            tok.string for tok in tokenize.tokenize(BytesIO(code2.encode("utf-8")).readline)
+            if tok.type not in {tokenize.ENCODING, tokenize.NEWLINE, tokenize.NL, tokenize.INDENT, tokenize.DEDENT}
+        ]
+
+        set1, set2 = set(tokens1), set(tokens2)
+        common = set1.intersection(set2)
+        union = set1.union(set2)
+
+        return {
+            "lex_common_tokens": len(common),
+            "lex_total_tokens_1": len(set1),
+            "lex_total_tokens_2": len(set2),
+            "lex_jaccard": len(common) / len(union) if union else 1.0,
+            "lex_token_ratio": len(common) / len(tokens1) if tokens1 else 0.0,
+            "lex_ngram_sim": ngram_similarity(tokens1, tokens2),
+            "line_length_diff": abs(len(tokens1) - len(tokens2)),
+            "token_edit_ratio": difflib.SequenceMatcher(None, tokens1, tokens2).ratio()
+        }
+
+    except tokenize.TokenError:
+        return {
+            "lex_common_tokens": 0,
+            "lex_total_tokens_1": 0,
+            "lex_total_tokens_2": 0,
+            "lex_jaccard": 0.0,
+            "lex_token_ratio": 0.0,
+            "lex_ngram_sim": 0.0,
+            "line_length_diff": 0,
+            "token_edit_ratio": 0.0
+        }
+
 class FeatureVector(ast.NodeVisitor):
-    def __init__(self, source_code=None):
+    def __init__(self, source_code1=None, source_code2=None):
         self.features = Counter()
-        self.source_code = source_code
-        if source_code:
-            self.features["NumComments"] = count_comments(source_code)
+        self.source_code1 = source_code1
+        self.source_code2 = source_code2
+        self.tree1 = ast.parse(source_code1) if source_code1 else None
+        self.tree2 = ast.parse(source_code2) if source_code2 else None
+
+        if source_code1:
+            self.features["NumComments_1"] = count_comments(source_code1)
+        if source_code2:
+            self.features["NumComments_2"] = count_comments(source_code2)
+
+    def extract(self):
+        if self.tree1:
+            self.visit(self.tree1)
+        if self.tree2:
+            self.visit(self.tree2)
+
+        sim = variable_name_similarity(self.tree1, self.tree2)
+        self.features["var_name_jaccard"] = sim["var_name_jaccard"]
+        self.features["var_name_overlap"] = sim["var_name_overlap"]
+        self.features["var_name_diff"] = sim["var_name_diff"]
+
+        if self.source_code1 and self.source_code2:
+            lex = lexical_similarity(self.source_code1, self.source_code2)
+            for key, value in lex.items():
+                self.features[key] = value
+
+            # Literals
+            literals1 = extract_literals(self.tree1)
+            literals2 = extract_literals(self.tree2)
+            literal_common = literals1.intersection(literals2)
+            literal_union = literals1.union(literals2)
+            self.features["literal_overlap"] = len(literal_common)
+            self.features["literal_jaccard"] = len(literal_common) / len(literal_union) if literal_union else 1.0
+
+            # Calls
+            calls1 = extract_call_names(self.tree1)
+            calls2 = extract_call_names(self.tree2)
+            seq = difflib.SequenceMatcher(None, calls1, calls2)
+            self.features["call_sequence_similarity"] = seq.ratio()
+
+            # Funciones definidas (nuevo bloque)
+            funcs1 = len([n for n in ast.walk(self.tree1) if isinstance(n, ast.FunctionDef)])
+            funcs2 = len([n for n in ast.walk(self.tree2) if isinstance(n, ast.FunctionDef)])
+            self.features["num_funcs_1"] = funcs1
+            self.features["num_funcs_2"] = funcs2
+            self.features["func_count_diff"] = abs(funcs1 - funcs2)
+
+        return self.features
+
 
     def visit_FunctionDef(self, node):
         self.features["FunctionDef"] += 1
         self.features["TotalArgs"] += len(node.args.args)
 
-        # Calcular longitud total de cada función
-        line_nums = []
-        for child in ast.walk(node):
-            if hasattr(child, "lineno"):
-                line_nums.append(child.lineno)
+        line_nums = [child.lineno for child in ast.walk(node) if hasattr(child, "lineno")]
         if line_nums:
             length = max(line_nums) - min(line_nums) + 1
             self.features["AvgFuncLength"] += length
 
-        # Profundidad
         self.features["FunctionDepth"] = max(
             self.features.get("FunctionDepth", 0),
             self._compute_depth(node)
         )
 
-        # Función anidada
         if any(isinstance(n, ast.FunctionDef) for n in ast.iter_child_nodes(node)):
             self.features["NestedFunc"] += 1
 
         self.generic_visit(node)
 
     def _compute_depth(self, node, level=1):
-        max_depth = level
-        for child in ast.iter_child_nodes(node):
-            if isinstance(child, (ast.FunctionDef, ast.If, ast.While, ast.For)):
-                max_depth = max(max_depth, self._compute_depth(child, level + 1))
-        return max_depth
+        return max((self._compute_depth(child, level + 1)
+                    for child in ast.iter_child_nodes(node)
+                    if isinstance(child, (ast.FunctionDef, ast.If, ast.While, ast.For))), default=level)
 
-    def visit_Return(self, node):
-        self.features["Return"] += 1
-        self.generic_visit(node)
-
-    def visit_Call(self, node):
-        self.features["Call"] += 1
-        self.generic_visit(node)
-
-    def visit_Name(self, node):
-        self.features["Name"] += 1
-        self.generic_visit(node)
-
-    def visit_Assign(self, node):
-        self.features["Assign"] += 1
-        self.generic_visit(node)
-
-    def visit_AugAssign(self, node):
-        self.features["AugAssign"] += 1
-        self.generic_visit(node)
-
-    def visit_For(self, node):
-        self.features["For"] += 1
-        self.generic_visit(node)
-
-    def visit_While(self, node):
-        self.features["While"] += 1
-        self.generic_visit(node)
+    def visit_Return(self, node): self.features["Return"] += 1; self.generic_visit(node)
+    def visit_Call(self, node): self.features["Call"] += 1; self.generic_visit(node)
+    def visit_Name(self, node): self.features["Name"] += 1; self.generic_visit(node)
+    def visit_Assign(self, node): self.features["Assign"] += 1; self.generic_visit(node)
+    def visit_AugAssign(self, node): self.features["AugAssign"] += 1; self.generic_visit(node)
+    def visit_For(self, node): self.features["For"] += 1; self.generic_visit(node)
+    def visit_While(self, node): self.features["While"] += 1; self.generic_visit(node)
 
     def visit_If(self, node):
         self.features["If"] += 1
-        if node.orelse:
-            self.features["IfElse"] += 1
-        if any(isinstance(child, ast.If) for child in node.body):
-            self.features["NestedIf"] += 1
+        if node.orelse: self.features["IfElse"] += 1
+        if any(isinstance(child, ast.If) for child in node.body): self.features["NestedIf"] += 1
         self.generic_visit(node)
 
-    def visit_Dict(self, node):
-        self.features["Dict"] += 1
-        self.generic_visit(node)
-
-    def visit_Set(self, node):
-        self.features["Set"] += 1
-        self.generic_visit(node)
-
-    def visit_List(self, node):
-        self.features["List"] += 1
-        self.generic_visit(node)
-
-    def visit_Tuple(self, node):
-        self.features["Tuple"] += 1
-        self.generic_visit(node)
+    def visit_Dict(self, node): self.features["Dict"] += 1; self.generic_visit(node)
+    def visit_Set(self, node): self.features["Set"] += 1; self.generic_visit(node)
+    def visit_List(self, node): self.features["List"] += 1; self.generic_visit(node)
+    def visit_Tuple(self, node): self.features["Tuple"] += 1; self.generic_visit(node)
 
     def visit_BinOp(self, node):
-        op_type = type(node.op)
         op_name = {
-            ast.Add: "+",
-            ast.Sub: "-",
-            ast.Mult: "*",
-            ast.Div: "/",
-            ast.FloorDiv: "//",
-            ast.Mod: "%",
-            ast.Pow: "**",
-            ast.LShift: "<<",
-            ast.RShift: ">>",
-            ast.BitOr: "|",
-            ast.BitXor: "^",
-            ast.BitAnd: "&",
-            ast.MatMult: "@"
-        }.get(op_type, str(op_type))
+            ast.Add: "+", ast.Sub: "-", ast.Mult: "*", ast.Div: "/", ast.FloorDiv: "//",
+            ast.Mod: "%", ast.Pow: "**", ast.LShift: "<<", ast.RShift: ">>", ast.BitOr: "|",
+            ast.BitXor: "^", ast.BitAnd: "&", ast.MatMult: "@"
+        }.get(type(node.op), str(type(node.op)))
         self.features[f"BinOp:{op_name}"] += 1
         self.generic_visit(node)
 
     def visit_BoolOp(self, node):
-        op_type = type(node.op)
-        op_name = {
-            ast.And: "and",
-            ast.Or: "or",
-        }.get(op_type, str(op_type))
+        op_name = {ast.And: "and", ast.Or: "or"}.get(type(node.op), str(type(node.op)))
         self.features[f"BoolOp:{op_name}"] += 1
 
     def visit_Compare(self, node):
         for op in node.ops:
-            op_type = type(op)
             op_name = {
-                ast.Eq: "==",
-                ast.NotEq: "!=",
-                ast.Lt: "<",
-                ast.LtE: "<=",
-                ast.Gt: ">",
-                ast.GtE: ">=",
-                ast.Is: "is",
-                ast.IsNot: "is not",
-                ast.In: "in",
-                ast.NotIn: "not in",
-            }.get(op_type, str(op_type))
+                ast.Eq: "==", ast.NotEq: "!=", ast.Lt: "<", ast.LtE: "<=",
+                ast.Gt: ">", ast.GtE: ">=", ast.Is: "is", ast.IsNot: "is not",
+                ast.In: "in", ast.NotIn: "not in"
+            }.get(type(op), str(type(op)))
             self.features[f"Cmp:{op_name}"] += 1
         self.generic_visit(node)

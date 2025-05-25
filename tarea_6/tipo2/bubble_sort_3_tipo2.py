@@ -1,23 +1,23 @@
-def ordenar_burbuja_extendida(arr):
-    paso = 1
-    n = len(arr)
-    ordenado = False
-    while not ordenado:
-        ordenado = True
-        for i in range(n - 1):
-            if arr[i] > arr[i + 1]:
-                arr[i], arr[i + 1] = arr[i + 1], arr[i]
-                ordenado = False
-            print(f"Paso {paso}: {arr}")
-            paso += 1
-        n -= 1
-    return arr
+def imprimir_paso(elementos, contador):
+    print(f"Paso {contador}: {elementos}")
 
-def programa():
-    valores = [3, 1, 6, 2, 9]
-    print("Original:", valores)
-    final = ordenar_burbuja_extendida(valores.copy())
-    print("Final:", final)
+def metodo_burbuja(valores):
+    total = len(valores)
+    contador = 1
+    for i in range(total - 1):
+        for j in range(total - i - 1):
+            if valores[j] > valores[j + 1]:
+                valores[j], valores[j + 1] = valores[j + 1], valores[j]
+            imprimir_paso(valores, contador)
+            contador += 1
+    return valores
 
-programa()
+def iniciar():
+    datos = [29, 10, 14, 37, 13]
+    print("Lista original:", datos)
+    print("Ordenando...")
+    final = metodo_burbuja(datos.copy())
+    print("Resultado final:", final)
+
+iniciar()
 

@@ -1,37 +1,42 @@
 import random
 
-def pedir_carta():
+def carta_aleatoria():
     return random.randint(1, 11)
 
-def blackjack():
-    jugador = 0
-    computadora = 0
-    seguir = 's'
+def turno_humano():
+    suma = 0
+    while True:
+        nueva = carta_aleatoria()
+        suma += nueva
+        print(f"Carta recibida: {nueva}, total actual: {suma}")
+        if suma > 21:
+            print("Te has pasado. Derrota.")
+            return suma
+        seguir = input("¿Deseas otra carta? (s/n): ").lower()
+        if seguir != 's':
+            break
+    return suma
 
-    print("Bienvenido al Blackjack básico.")
+def turno_pc():
+    suma = 0
+    while suma < 17:
+        nueva = carta_aleatoria()
+        suma += nueva
+        print(f"PC saca: {nueva}, suma total: {suma}")
+    return suma
 
-    while seguir == 's':
-        carta = pedir_carta()
-        jugador += carta
-        print(f"Tu carta: {carta} | Total: {jugador}")
-        if jugador > 21:
-            print("Te pasaste. Game Over.")
-            return
-        seguir = input("¿Quieres otra carta? (s/n): ")
-
-    while computadora < 17:
-        c = pedir_carta()
-        computadora += c
-        print(f"La computadora saca: {c} | Total: {computadora}")
-
-    print("\n--- Resultado Final ---")
-    print(f"Tú: {jugador} | Computadora: {computadora}")
-    if computadora > 21 or jugador > computadora:
-        print("Ganaste.")
-    elif jugador < computadora:
-        print("Perdiste.")
+def ejecutar_juego():
+    print("=== Blackjack VS Computadora ===")
+    jugador = turno_humano()
+    if jugador > 21:
+        return
+    pc = turno_pc()
+    if pc > 21 or jugador > pc:
+        print("¡Victoria!")
+    elif jugador < pc:
+        print("Derrota.")
     else:
         print("Empate.")
 
-blackjack()
+ejecutar_juego()
 

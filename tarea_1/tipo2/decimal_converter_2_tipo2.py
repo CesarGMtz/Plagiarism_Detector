@@ -1,26 +1,26 @@
-def obtener_conversiones(n):
+def obtener_bases(valor):
     return {
-        'Bin': lambda v: bin(v)[2:],
-        'Oct': lambda v: oct(v)[2:],
-        'Hex': lambda v: hex(v)[2:].upper()
+        'bin': lambda x: bin(x)[2:],
+        'oct': lambda x: oct(x)[2:],
+        'hex': lambda x: hex(x)[2:].upper()
     }
 
-def mostrar_todo(n):
-    conversiones = obtener_conversiones(n)
-    print(f"Convertir el número: {n}")
-    for clave in conversiones:
-        resultado = conversiones[clave](n)
-        print(f"{clave}: {resultado}")
+def imprimir_bases(numero):
+    mapas = obtener_bases(numero)
+    print(f"DEC: {numero}")
+    for clave, fx in mapas.items():
+        print(f"{clave.upper()}: {fx(numero)}")
 
-def inicio():
-    print("Inicio del conversor")
+def iniciar():
+    print("Conversión desde decimal")
     try:
         dato = int(input("Número: "))
         if dato >= 0:
-            mostrar_todo(dato)
+            imprimir_bases(dato)
         else:
-            print("Debe ser positivo.")
+            print("No se permiten negativos.")
     except:
-        print("Dato inválido")
+        print("Dato inválido.")
 
-inicio()
+iniciar()
+

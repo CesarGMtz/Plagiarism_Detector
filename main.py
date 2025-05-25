@@ -1,64 +1,101 @@
+import os
 import ast
-
+import itertools
+import pandas as pd
+import joblib
+from sklearn.preprocessing import StandardScaler
 from zipfile import ZipFile
+from feature_extractor import extract_features_from_pair
+from datetime import datetime
 
-from featureVector import FeatureVector
+# === 1. Cargar y extraer el ZIP ===
+zip_path = "codigos.zip"
+extract_dir = "codigos_extraidos"
 
-def read_zipFile(path):
-    raw_codes = []
-    
-    archive = ZipFile(path, 'r')
-    files = archive.namelist()
-    
-    for file in files:
-        with archive.open(file) as file_content:
-            content = file_content.read().decode('utf-8')
-            raw_codes.append(content)
-    
-    return raw_codes
-    
-def gen_tree(normalized_codes):
-    asts_codes = []
-    
-    for code in normalized_codes:
-        tree = ast.parse(code)
-        asts_codes.append(tree)
-    
-    return asts_codes
+if not os.path.exists(zip_path):
+    print(f" El archivo {zip_path} no existe.")
+    exit()
 
-def extract_features(asts_codes):
-    feature_vectors = []
-    
-    for tree in asts_codes:
-        extractor = FeatureVector()
-        extractor.visit(tree)
-        feature_vectors.append(extractor.features)
-    
-    return feature_vectors
+with ZipFile(zip_path, 'r') as zip_ref:
+    zip_ref.extractall(extract_dir)
 
-def diff_features(feature_vectors):
-    diff_vectors = []
-    
-    for i in range(len(feature_vectors)):
-        for j in range(i + 1, len(feature_vectors)):
-            fv1 = feature_vectors[i]
-            fv2 = feature_vectors[j]
-            
-            keys = set(fv1.keys()).union(fv2.keys())
-            
-            diff = {key: abs(fv1.get(key, 0) - fv2.get(key, 0)) for key in keys}
-            diff_vectors.append(diff)
-    
-    return diff_vectors
+# === 2. Buscar todos los .py ===
+all_files = []
+for root, _, files in os.walk(extract_dir):
+    for f in files:
+        if f.endswith(".py") and not f.startswith("._"):
+            all_files.append(os.path.join(root, f))
 
-# MAIN
-r_codes = read_zipFile('codes/test.zip')
+if len(all_files) < 2:
+    print(" Se necesitan al menos dos archivos .py")
+    exit()
 
-a_codes = gen_tree(r_codes)
-# print(ast.dump(a_codes[0], indent=4))
+# === 3. Todos vs todos (permutaciones) ===
+pares = list(itertools.permutations(all_files, 2))
 
-f_vectors = extract_features(a_codes)
-# print(f_vectors[0])
+# === 4. Extraer características ===
+features_list = []
+archivo1_list = []
+archivo2_list = []
 
-d_vectors = diff_features(f_vectors)
-print(d_vectors)
+for archivo1, archivo2 in pares:
+    try:
+        features = extract_features_from_pair(archivo1, archivo2)
+        features_list.append(features)
+        archivo1_list.append(os.path.basename(archivo1))
+        archivo2_list.append(os.path.basename(archivo2))
+    except Exception as e:
+        print(f"⚠️ Error con par {archivo1} - {archivo2}: {e}")
+
+if not features_list:
+    print(" No se extrajeron características.")
+    exit()
+
+df_features = pd.DataFrame(features_list)
+df_features.insert(0, "archivo_1", archivo1_list)
+df_features.insert(1, "archivo_2", archivo2_list)
+
+# === 5. Cargar modelos entrenados ===
+try:
+    svm_model = joblib.load("modelo_SVM.joblib")
+    svm_scaler = joblib.load("scaler_SVM.joblib")
+    rf_model = joblib.load("modelo_RF.joblib")
+    rf_scaler = joblib.load("scaler_RF.joblib")
+except Exception as e:
+    print(f"❌ Error al cargar modelos: {e}")
+    exit()
+
+# === 6. Clasificación binaria con SVM ===
+try:
+    X_bin = svm_scaler.transform(df_features.drop(columns=["archivo_1", "archivo_2"]))
+    df_features["es_plagio"] = svm_model.predict(X_bin)
+except Exception as e:
+    print(f"❌ Error en clasificación binaria: {e}")
+    exit()
+
+# === 7. Clasificación multiclase con RF ===
+try:
+    X_tri = df_features[df_features["es_plagio"] == 1].drop(columns=["archivo_1", "archivo_2", "es_plagio"])
+    if not X_tri.empty:
+        X_tri_scaled = rf_scaler.transform(X_tri)
+        df_features.loc[df_features["es_plagio"] == 1, "tipo_plagio_predicho"] = rf_model.predict(X_tri_scaled)
+    else:
+        df_features["tipo_plagio_predicho"] = 0
+except Exception as e:
+    print(f"❌ Error en clasificación triclase: {e}")
+    df_features["tipo_plagio_predicho"] = 0
+
+# === 8. Guardar en un solo archivo Excel ===
+output_file = "resultado_clasificacion_unificado.xlsx"
+
+if os.path.exists(output_file):
+    df_existente = pd.read_excel(output_file)
+else:
+    df_existente = pd.DataFrame(columns=["archivo_1", "archivo_2", "es_plagio", "tipo_plagio_predicho"])
+
+# Agregar evitando duplicados exactos
+df_nuevo = df_features[["archivo_1", "archivo_2", "es_plagio", "tipo_plagio_predicho"]]
+df_final = pd.concat([df_existente, df_nuevo]).drop_duplicates()
+
+df_final.to_excel(output_file, index=False)
+print(f"✅ Clasificación completada y guardada en: {output_file}")

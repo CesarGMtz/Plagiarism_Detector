@@ -1,16 +1,18 @@
-def iniciar():
-    print(">>> DECIMAL a BIN / OCT / HEX <<<")
+def ejecutar():
+    print("== Conversión de decimal a bin/oct/hex ==")
     try:
-        d = int(input("Introduce un valor: "))
-        if d < 0:
-            print("No se permiten números negativos.")
+        valor = int(input("Introduce un número: "))
+        if valor < 0:
+            print("No se permiten negativos.")
             return
 
-        print("Conversión:")
-        print("Bin: " + bin(d)[2:])
-        print("Oct: " + oct(d)[2:])
-        print("Hex: " + hex(d)[2:].upper())
-    except:
-        print("Entrada incorrecta.")
+        print("=== Resultado ===")
+        print("BIN:", format(valor, "b"))
+        print("OCT:", format(valor, "o"))
+        print("HEX:", format(valor, "X"))
+    except ValueError:
+        print("Entrada inválida. Usa un número entero.")
 
-iniciar()
+if __name__ == "__main__":
+    ejecutar()
+

@@ -1,26 +1,22 @@
-def mostrar_paso(lista, paso):
-    print(f"Paso {paso}: {lista}")
+def ordenar_burbuja(arreglo):
+    total = len(arreglo)
+    for i in range(total):
+        print(f"Vuelta {i+1}:")
+        for j in range(0, total - i - 1):
+            if arreglo[j] > arreglo[j + 1]:
+                arreglo[j], arreglo[j + 1] = arreglo[j + 1], arreglo[j]
+            print(" ", arreglo)
+        print("-" * 30)
+    return arreglo
 
-def burbuja_mejorada(valores):
-    n = len(valores)
-    paso = 1
-    for i in range(n):
-        intercambiado = False
-        for j in range(n - i - 1):
-            if valores[j] > valores[j + 1]:
-                valores[j], valores[j + 1] = valores[j + 1], valores[j]
-                intercambiado = True
-            mostrar_paso(valores, paso)
-            paso += 1
-        if not intercambiado:
-            break
-    return valores
+def ejecutar():
+    numeros = [64, 34, 25, 12, 22, 11, 90]
+    print("Lista inicial:")
+    print(numeros)
+    print("\nOrdenando paso a paso:")
+    resultado = ordenar_burbuja(numeros.copy())
+    print("\nLista ordenada:")
+    print(resultado)
 
-def main():
-    lista = [7, 4, 5, 3, 8]
-    print("Lista antes:", lista)
-    ordenada = burbuja_mejorada(lista.copy())
-    print("Lista después:", ordenada)
-
-main()
+ejecutar()
 

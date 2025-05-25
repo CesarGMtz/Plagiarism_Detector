@@ -2,29 +2,31 @@ import random
 
 def partida():
     jugadas = ['piedra', 'papel', 'tijera']
-    puntos = {'jugador': 0, 'cpu': 0}
+    score_humano = 0
+    score_pc = 0
 
-    for i in range(3):
-        jugador = input("Tu jugada (piedra/papel/tijera): ").lower()
-        cpu = random.choice(jugadas)
+    for ronda in range(3):
+        jugada_pc = random.choice(jugadas)
+        jugada = input("Selecciona piedra, papel o tijera: ").lower()
 
-        if jugador not in jugadas:
-            print("Entrada no válida.")
+        if jugada not in jugadas:
+            print("Jugada inválida.")
             continue
 
-        print(f"CPU eligió: {cpu}")
-        if jugador == cpu:
-            print("Empate.")
-        elif (jugador == 'piedra' and cpu == 'tijera') or \
-             (jugador == 'papel' and cpu == 'piedra') or \
-             (jugador == 'tijera' and cpu == 'papel'):
-            puntos['jugador'] += 1
-            print("Punto para ti.")
-        else:
-            puntos['cpu'] += 1
-            print("Punto para la CPU.")
+        print(f"Computadora eligió: {jugada_pc}")
 
-    print(f"Resultado final -> Tú: {puntos['jugador']} | CPU: {puntos['cpu']}")
+        if jugada == jugada_pc:
+            print("Empate.")
+        elif (jugada == 'piedra' and jugada_pc == 'tijera') or \
+             (jugada == 'papel' and jugada_pc == 'piedra') or \
+             (jugada == 'tijera' and jugada_pc == 'papel'):
+            print("Ganas el punto.")
+            score_humano += 1
+        else:
+            print("La computadora gana el punto.")
+            score_pc += 1
+
+    print(f"\nResultado final -> Tú: {score_humano} | PC: {score_pc}")
 
 partida()
 

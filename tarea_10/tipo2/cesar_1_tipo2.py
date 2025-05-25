@@ -1,26 +1,40 @@
-def cesar(texto, desplazamiento):
+def encriptar(cadena, shift):
     resultado = ""
-    for c in texto:
-        if c.isalpha():
-            base = ord('A') if c.isupper() else ord('a')
-            nueva = chr((ord(c) - base + desplazamiento) % 26 + base)
-            resultado += nueva
+    for char in cadena:
+        if char.isalpha():
+            base = ord('A') if char.isupper() else ord('a')
+            cifrado = chr((ord(char) - base + shift) % 26 + base)
+            resultado += cifrado
         else:
-            resultado += c
+            resultado += char
     return resultado
 
-def iniciar():
-    while True:
-        accion = input("\nEscribe 'cifrar', 'descifrar' o 'salir': ").lower()
-        if accion == 'salir':
-            break
-        if accion in ['cifrar', 'descifrar']:
-            texto = input("Mensaje: ")
-            valor = int(input("Desplazamiento: "))
-            valor = -valor if accion == 'descifrar' else valor
-            print("Resultado:", cesar(texto, valor))
-        else:
-            print("Comando no reconocido.")
+def desencriptar(cadena, shift):
+    return encriptar(cadena, -shift)
 
-iniciar()
+def mostrar_menu():
+    print("\n== CIFRADO CÉSAR ==")
+    print("1. Encriptar")
+    print("2. Desencriptar")
+    print("3. Salir")
+
+def ejecutar():
+    while True:
+        mostrar_menu()
+        eleccion = input("Selecciona una opción: ")
+        if eleccion == '1':
+            txt = input("Texto a encriptar: ")
+            desplazamiento = int(input("Desplazamiento: "))
+            print("Resultado:", encriptar(txt, desplazamiento))
+        elif eleccion == '2':
+            txt = input("Texto a desencriptar: ")
+            desplazamiento = int(input("Desplazamiento: "))
+            print("Resultado:", desencriptar(txt, desplazamiento))
+        elif eleccion == '3':
+            print("Saliendo...")
+            break
+        else:
+            print("Opción no válida.")
+
+ejecutar()
 

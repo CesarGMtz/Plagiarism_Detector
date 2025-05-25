@@ -1,22 +1,23 @@
-def transformar_decimal(valor):
-    bin_ = bin(valor)[2:]
-    oct_ = oct(valor)[2:]
-    hex_ = hex(valor)[2:].upper()
+def base_converter(valor):
+    bin_str = bin(valor)[2:]
+    oct_str = oct(valor)[2:]
+    hex_str = hex(valor)[2:].upper()
 
-    print(f"Entrada: {valor}")
-    print(f"En binario: {bin_}")
-    print(f"En octal: {oct_}")
-    print(f"En hexadecimal: {hex_}")
+    print(f"DEC: {valor}")
+    print(f"BIN: {bin_str}")
+    print(f"OCT: {oct_str}")
+    print(f"HEX: {hex_str}")
 
-def ejecutar():
-    print("== CONVERSOR DE BASES ==")
+def inicio():
+    print("Convertidor de número decimal")
     try:
-        numero_usuario = int(input("Número decimal a convertir: "))
-        if numero_usuario < 0:
-            print("Solo se admiten valores positivos.")
+        entrada = int(input("Ingresa un número entero positivo: "))
+        if entrada < 0:
+            print("Solo se permiten números positivos.")
             return
-        transformar_decimal(numero_usuario)
+        base_converter(entrada)
     except ValueError:
-        print("Error: entrada no válida.")
+        print("Error: valor no válido.")
 
-ejecutar()
+inicio()
+

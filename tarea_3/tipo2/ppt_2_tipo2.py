@@ -1,22 +1,28 @@
 import random
 
-def jugar():
-    opciones = ['piedra', 'papel', 'tijera']
-    gana_a = {'piedra': 'tijera', 'papel': 'piedra', 'tijera': 'papel'}
+def pedir_jugada():
+    return input("Selecciona (piedra / papel / tijera): ").lower()
 
-    user = input("Tu jugada: ").strip().lower()
-    pc = random.choice(opciones)
+def partida():
+    vence = {'piedra': 'tijera', 'papel': 'piedra', 'tijera': 'papel'}
+    jugadas = list(vence.keys())
 
-    print(f"Computadora: {pc}")
+    humano = pedir_jugada()
+    maquina = random.choice(jugadas)
 
-    if user == pc:
+    if humano not in jugadas:
+        print("Opción inválida.")
+        return
+
+    print("Elegiste:", humano)
+    print("Computadora:", maquina)
+
+    if humano == maquina:
         print("Empate")
-    elif user in gana_a and gana_a[user] == pc:
+    elif vence[humano] == maquina:
         print("Ganaste")
-    elif user in opciones:
-        print("Perdiste")
     else:
-        print("Movimiento inválido.")
+        print("Derrota")
 
-jugar()
+partida()
 

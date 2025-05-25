@@ -1,44 +1,52 @@
-def menu():
-    print("\n--- GESTOR DE NOTAS ---")
+def mostrar_menu():
+    print("\n=== Gestor de Notas ===")
     print("1. Crear nota")
-    print("2. Listar notas")
+    print("2. Ver notas")
     print("3. Quitar nota")
     print("4. Salir")
 
-def crear(notas, contador):
-    nota = input("Nota nueva: ")
-    notas.append([contador, nota])
-    return contador + 1
+def crear_nota(registro, actual):
+    contenido = input("Nueva nota: ")
+    registro[actual] = contenido
+    print(f"Guardado como nota #{actual}")
+    return actual + 1
 
-def listar(notas):
-    for idn, contenido in notas:
-        print(f"[{idn}] {contenido}")
+def ver_notas(registro):
+    if not registro:
+        print("No hay notas disponibles.")
+    else:
+        for id, texto in registro.items():
+            print(f"[{id}] {texto}")
 
-def quitar(notas):
-    listar(notas)
+def quitar_nota(registro):
+    ver_notas(registro)
     try:
-        eliminar = int(input("ID a quitar: "))
-        notas[:] = [n for n in notas if n[0] != eliminar]
-        print("Nota eliminada.")
-    except:
-        print("Error.")
+        objetivo = int(input("ID a quitar: "))
+        if objetivo in registro:
+            del registro[objetivo]
+            print("Nota eliminada.")
+        else:
+            print("ID no encontrado.")
+    except ValueError:
+        print("Dato no válido.")
 
-def programa():
-    lista = []
+def iniciar_sesion():
+    base = {}
     contador = 1
     while True:
-        menu()
-        opcion = input("Opción: ")
-        if opcion == '1':
-            contador = crear(lista, contador)
-        elif opcion == '2':
-            listar(lista)
-        elif opcion == '3':
-            quitar(lista)
-        elif opcion == '4':
+        mostrar_menu()
+        eleccion = input("Selecciona opción: ")
+        if eleccion == '1':
+            contador = crear_nota(base, contador)
+        elif eleccion == '2':
+            ver_notas(base)
+        elif eleccion == '3':
+            quitar_nota(base)
+        elif eleccion == '4':
+            print("Cerrando notas...")
             break
         else:
             print("Opción inválida.")
 
-programa()
+iniciar_sesion()
 

@@ -1,22 +1,28 @@
-def convertir(valor, origen):
-    conversiones = {
-        "C": lambda v: ((v * 9/5 + 32), (v + 273.15)),
-        "F": lambda v: (((v - 32) * 5/9), ((v - 32) * 5/9 + 273.15)),
-        "K": lambda v: ((v - 273.15), ((v - 273.15) * 9/5 + 32))
-    }
-    return conversiones.get(origen, lambda v: (None, None))(valor)
+def transformar(valor, unidad):
+    if unidad == "C":
+        return (valor * 9 / 5) + 32, valor + 273.15
+    elif unidad == "F":
+        c = (valor - 32) * 5 / 9
+        return c, c + 273.15
+    elif unidad == "K":
+        c = valor - 273.15
+        return c, (c * 9 / 5) + 32
+    return None, None
 
-def ejecutar_conversion():
-    unidad = input("Origen (C/F/K): ").upper()
+def iniciar():
+    print("== Conversión de Temperaturas ==")
+    print("Opciones: C (Celsius), F (Fahrenheit), K (Kelvin)")
+    origen = input("Ingresa unidad de origen: ").strip().upper()
+
     try:
-        temp = float(input("Valor: "))
-        r1, r2 = convertir(temp, unidad)
-        if r1 is None:
-            print("Unidad no soportada.")
+        cantidad = float(input("Valor numérico: "))
+        t1, t2 = transformar(cantidad, origen)
+        if t1 is None:
+            print("Unidad desconocida.")
         else:
-            print(f"Resultado 1: {r1:.2f}, Resultado 2: {r2:.2f}")
+            print(f"Equivalentes: {t1:.2f}, {t2:.2f}")
     except:
-        print("Error en entrada.")
+        print("Entrada inválida.")
 
-ejecutar_conversion()
+iniciar()
 
