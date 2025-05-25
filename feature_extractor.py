@@ -1,7 +1,6 @@
 import ast
 from featureVector import FeatureVector
 
-# Las mismas claves fijas que usaste para generar el CSV
 FIXED_KEYS = [
     'Assign', 'AugAssign', 'BinOp:+', 'BinOp:-', 'BinOp:*', 'BinOp:/', 'BinOp://', 'BinOp:%',
     'BoolOp:and', 'BoolOp:or',
@@ -12,7 +11,10 @@ FIXED_KEYS = [
     'lex_common_tokens', 'lex_total_tokens_1', 'lex_total_tokens_2', 'lex_jaccard', 'lex_token_ratio',
     'lex_ngram_sim',
     'line_length_diff', 'literal_overlap', 'literal_jaccard',
-'token_edit_ratio', 'call_sequence_similarity', 'num_funcs_1', 'num_funcs_2', 'func_count_diff'
+'token_edit_ratio', 'call_sequence_similarity', 'num_funcs_1', 'num_funcs_2', 'func_count_diff', 'func_line_ratio_1', 'func_line_ratio_2', 'func_line_ratio_diff',
+"tokens_per_func_diff", 'control_flow_sim','func_name_sequence_similarity'
+
+
 
 
 ]

@@ -35,7 +35,28 @@ def extract_literals(tree):
 
 def extract_call_names(tree):
     return [n.func.id for n in ast.walk(tree) if isinstance(n, ast.Call) and isinstance(n.func, ast.Name)]
+def extract_control_flow_sequence(tree):
+    sequence = []
+    for node in ast.walk(tree):
+        if isinstance(node, ast.If):
+            sequence.append("if")
+        elif isinstance(node, ast.For):
+            sequence.append("for")
+        elif isinstance(node, ast.While):
+            sequence.append("while")
+        elif isinstance(node, ast.FunctionDef):
+            sequence.append("def")
+        elif isinstance(node, ast.Call):
+            sequence.append("call")
+        elif isinstance(node, ast.Return):
+            sequence.append("return")
+    return sequence
 
+def control_flow_similarity(tree1, tree2):
+    seq1 = extract_control_flow_sequence(tree1)
+    seq2 = extract_control_flow_sequence(tree2)
+    matcher = difflib.SequenceMatcher(None, seq1, seq2)
+    return matcher.ratio()
 def ngram_similarity(tokens1, tokens2, n=3):
     def get_ngrams(tokens, n):
         return set(tuple(tokens[i:i+n]) for i in range(len(tokens) - n + 1))
@@ -126,12 +147,51 @@ class FeatureVector(ast.NodeVisitor):
             seq = difflib.SequenceMatcher(None, calls1, calls2)
             self.features["call_sequence_similarity"] = seq.ratio()
 
-            # Funciones definidas (nuevo bloque)
+            # Funciones definidas
             funcs1 = len([n for n in ast.walk(self.tree1) if isinstance(n, ast.FunctionDef)])
             funcs2 = len([n for n in ast.walk(self.tree2) if isinstance(n, ast.FunctionDef)])
             self.features["num_funcs_1"] = funcs1
             self.features["num_funcs_2"] = funcs2
             self.features["func_count_diff"] = abs(funcs1 - funcs2)
+            # Similaridad del orden de nombres de funciones
+            def get_func_names(tree):
+                return [n.name for n in ast.walk(tree) if isinstance(n, ast.FunctionDef)]
+
+            func_names1 = get_func_names(self.tree1)
+            func_names2 = get_func_names(self.tree2)
+            seq_func = difflib.SequenceMatcher(None, func_names1, func_names2)
+            self.features["func_name_sequence_similarity"] = seq_func.ratio()
+            # Promedio de tokens por función (tipo 3 tiende a muchas funciones pequeñas)
+            tokens1 = [
+                tok.string for tok in tokenize.tokenize(BytesIO(self.source_code1.encode("utf-8")).readline)
+                if tok.type not in {tokenize.ENCODING, tokenize.NEWLINE, tokenize.NL, tokenize.INDENT, tokenize.DEDENT}
+            ]
+            tokens2 = [
+                tok.string for tok in tokenize.tokenize(BytesIO(self.source_code2.encode("utf-8")).readline)
+                if tok.type not in {tokenize.ENCODING, tokenize.NEWLINE, tokenize.NL, tokenize.INDENT, tokenize.DEDENT}
+            ]
+            tokens_per_func_1 = len(tokens1) / funcs1 if funcs1 else 0
+            tokens_per_func_2 = len(tokens2) / funcs2 if funcs2 else 0
+            self.features["tokens_per_func_diff"] = abs(tokens_per_func_1 - tokens_per_func_2)
+
+            # Proporción de líneas en funciones vs total
+            total_lines_1 = len(self.source_code1.strip().splitlines())
+            total_lines_2 = len(self.source_code2.strip().splitlines())
+
+            func_lines_1 = sum(
+                max([child.lineno for child in ast.walk(n) if hasattr(child, "lineno")], default=n.lineno) - n.lineno + 1
+                for n in ast.walk(self.tree1) if isinstance(n, ast.FunctionDef)
+            )
+            func_lines_2 = sum(
+                max([child.lineno for child in ast.walk(n) if hasattr(child, "lineno")], default=n.lineno) - n.lineno + 1
+                for n in ast.walk(self.tree2) if isinstance(n, ast.FunctionDef)
+            )
+
+            self.features["func_line_ratio_1"] = func_lines_1 / total_lines_1 if total_lines_1 else 0
+            self.features["func_line_ratio_2"] = func_lines_2 / total_lines_2 if total_lines_2 else 0
+            self.features["func_line_ratio_diff"] = abs(self.features["func_line_ratio_1"] - self.features["func_line_ratio_2"])
+            # Similaridad de flujo de control
+            self.features["control_flow_sim"] = control_flow_similarity(self.tree1, self.tree2)
 
         return self.features
 
