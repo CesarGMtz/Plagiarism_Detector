@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Resultados de Análisis</title>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Century Gothic', CenturyGothic, AppleGothic, sans-serif;
+            margin: 0;
+            background-color: #f0f2f5;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background-color:rgb(0, 56, 111);
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            height: 7vh
+        }
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 34px;
+        }
+        .navbar-icons i {
+            margin-left: 15px;
+            font-size: 44px;
+        }
+
+        /* Main Content Styling */
+        h1 {
+            text-align: center;
+            margin-top: 30px;
+            color: #333;
+        }
+        #excel-table-container {
+            max-width: 90%;
+            margin: 20px auto;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: 8px;
+            overflow-x: auto;
+        }
+
+        /* Table Styles */
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f4f4f4;
+            color: #333;
+            text-transform: uppercase;
+        }
+        tr:nth-child(even) {
+            background-color: #e0f2f7;
+        }
+        tr:nth-child(odd) {
+            background-color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <span class="navbar-brand"><b>Detector de Plagio</b></span>
+        <div class="navbar-icons">
+            <i class="fas fa-cog"></i>
+            <i class="fas fa-user-circle"></i>
+        </div>
+    </div>
+
+    <h1>Resultados de Análisis de Plagio</h1>
+    <div id="excel-table-container">Cargando resultados...</div>
+
+    <script>
+        fetch('/get_excel')
+            .then(response => response.arrayBuffer())
+            .then(data => {
+                const workbook = XLSX.read(data, { type: 'array' });
+                const firstSheetName = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[firstSheetName];
+
+                let dataArray = XLSX.utils.sheet_to_json(worksheet, { header: 1 });
+
+                const originalHeaders = dataArray.length > 0 ? dataArray[0] : [];
+
+                const newHeaders = [
+                    "Archivo de Origen",
+                    "Archivo a Comparar",
+                    "Predicción: ¿Es plagio?",
+                    "Tipo de Plagio Predicho",
+                    "Sospecha Tipo 3",
+                    "Porcentaje Plagio"
+                ];
+
+                const plagiarismColumnIndex = newHeaders.findIndex(header => header === "Predicción: ¿Es plagio?");
+                const suspicionColumnIndex = newHeaders.findIndex(header => header === "Sospecha Tipo 3");
+                const percentageColumnIndex = newHeaders.findIndex(header => header === "Porcentaje Plagio");
+
+                if (plagiarismColumnIndex === -1 && originalHeaders.includes("plagio_predicho_humano")) {
+                    plagiarismColumnIndex = originalHeaders.indexOf("plagio_predicho_humano");
+                }
+                if (suspicionColumnIndex === -1 && originalHeaders.includes("sospecha_tipo3_%")) {
+                    suspicionColumnIndex = originalHeaders.indexOf("sospecha_tipo3_%");
+                }
+                if (percentageColumnIndex === -1 && originalHeaders.includes("porcentaje_tipo_plagio")) {
+                    percentageColumnIndex = originalHeaders.indexOf("porcentaje_tipo_plagio");
+                }
+
+                if (plagiarismColumnIndex === -1 || suspicionColumnIndex === -1 || percentageColumnIndex === -1) {
+                    console.error("Advertencia: No se pudieron encontrar todas las columnas necesarias. La transformación podría ser incompleta.");
+                }
+
+
+                if (dataArray.length > 0) {
+                    dataArray[0] = newHeaders;
+                } else {
+                    dataArray = [newHeaders];
+                }
+
+                for (let i = 1; i < dataArray.length; i++) {
+                    if (plagiarismColumnIndex !== -1 && dataArray[i] && dataArray[i][plagiarismColumnIndex] !== undefined) {
+                        const value = dataArray[i][plagiarismColumnIndex];
+                        if (value === 1) {
+                            dataArray[i][plagiarismColumnIndex] = 'Sí \u2714';
+                        } else if (value === 0) {
+                            dataArray[i][plagiarismColumnIndex] = 'No \u2718';
+                        }
+                    }
+
+                    if (suspicionColumnIndex !== -1 && dataArray[i] && dataArray[i][suspicionColumnIndex] !== undefined) {
+                        let value = dataArray[i][suspicionColumnIndex];
+                        if (typeof value === 'number' && value !== -1) {
+                            dataArray[i][suspicionColumnIndex] = value.toFixed(2) + '%';
+                        } else if (value === -1) {
+                            dataArray[i][suspicionColumnIndex] = '';
+                        }
+                    }
+
+                    if (percentageColumnIndex !== -1 && dataArray[i] && dataArray[i][percentageColumnIndex] !== undefined) {
+                        let value = dataArray[i][percentageColumnIndex];
+                        if (typeof value === 'number') {
+                            dataArray[i][percentageColumnIndex] = value.toFixed(2) + '%';
+                        }
+                    }
+                }
+
+                const newWorksheet = XLSX.utils.aoa_to_sheet(dataArray);
+
+                const html = XLSX.utils.sheet_to_html(newWorksheet, { editable: false, header: "" });
+                document.getElementById('excel-table-container').innerHTML = html;
+            })
+            .catch(error => {
+                document.getElementById('excel-table-container').innerText = "Error al cargar el Excel.";
+                console.error("Error leyendo el Excel:", error);
+            });
+    </script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Comparación de Archivos</title>
+  <style>
+    pre {
+      background-color: #f0f0f0;
+      padding: 10px;
+      width: 48%;
+      overflow-x: auto;
+      display: inline-block;
+      vertical-align: top;
+    }
+    .highlight {
+      background-color: yellow;
+    }
+  </style>
+</head>
+<body>
+  <h1>Comparación</h1>
+  <p><strong>{{ archivo1.split('/')[-1] }}</strong> vs <strong>{{ archivo2.split('/')[-1] }}</strong></p>
+  <p><strong>Probabilidad:</strong> {{ porcentaje }}% — {{ tipo }}</p>
+  <div>
+    <pre>
+{% for linea in contenido1.splitlines() %}
+{% if linea in coincidencias %}
+<span class="highlight">{{ linea }}</span>
+{% else %}
+{{ linea }}
+{% endif %}
+{% endfor %}
+    </pre>
+    <pre>
+{% for linea in contenido2.splitlines() %}
+{% if linea in coincidencias %}
+<span class="highlight">{{ linea }}</span>
+{% else %}
+{{ linea }}
+{% endif %}
+{% endfor %}
+    </pre>
+  </div>
+</body>
+</html>
