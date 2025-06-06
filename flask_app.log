@@ -1284,3 +1284,232 @@ INFO: --- PROCESO DE DETECCIÓN DE PLAGIO COMPLETADO ---
 2025-06-02 14:18:54,618 - INFO - 127.0.0.1 - - [02/Jun/2025 14:18:54] "[32mPOST /upload HTTP/1.1[0m" 302 -
 2025-06-02 14:18:54,639 - INFO - 127.0.0.1 - - [02/Jun/2025 14:18:54] "GET /results HTTP/1.1" 200 -
 2025-06-02 14:18:54,813 - INFO - 127.0.0.1 - - [02/Jun/2025 14:18:54] "GET /get_excel HTTP/1.1" 200 -
+2025-06-05 12:29:51,377 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-06-05 12:29:51,377 - INFO - [33mPress CTRL+C to quit[0m
+2025-06-05 12:29:55,503 - INFO - 127.0.0.1 - - [05/Jun/2025 12:29:55] "GET / HTTP/1.1" 200 -
+2025-06-05 12:29:56,184 - INFO - 127.0.0.1 - - [05/Jun/2025 12:29:56] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-06-05 12:55:06,535 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-06-05 12:55:06,535 - INFO - [33mPress CTRL+C to quit[0m
+2025-06-05 12:55:36,658 - INFO - Archivo ZIP 'loco.zip' guardado temporalmente en 'C:\Users\GhulRasal\Desktop\LuckyLuckiano\uploaded_zips_temp\fc310684-ea2a-4227-9dab-1c2ed16eeb92_loco.zip'
+2025-06-05 12:55:43,489 - INFO - pruebas.py stdout:
+
+2025-06-05 12:55:43,489 - INFO - pruebas.py stderr:
+INFO: --- INICIO DEL SCRIPT ---
+DEBUG: Archivo ZIP 'C:\Users\GhulRasal\Desktop\LuckyLuckiano\uploaded_zips_temp\fc310684-ea2a-4227-9dab-1c2ed16eeb92_loco.zip' extraído a 'C:\Users\GhulRasal\Desktop\LuckyLuckiano\plagio_core\temp_extraccion'.
+DEBUG: Archivos .py encontrados en el ZIP (pruebas.py): ['C:\\Users\\GhulRasal\\Desktop\\LuckyLuckiano\\plagio_core\\temp_extraccion\\1.py', 'C:\\Users\\GhulRasal\\Desktop\\LuckyLuckiano\\plagio_core\\temp_extraccion\\2.py', 'C:\\Users\\GhulRasal\\Desktop\\LuckyLuckiano\\plagio_core\\temp_extraccion\\3.py', 'C:\\Users\\GhulRasal\\Desktop\\LuckyLuckiano\\plagio_core\\temp_extraccion\\4.py', 'C:\\Users\\GhulRasal\\Desktop\\LuckyLuckiano\\plagio_core\\temp_extraccion\\5.py', 'C:\\Users\\GhulRasal\\Desktop\\LuckyLuckiano\\plagio_core\\temp_extraccion\\6.py', 'C:\\Users\\GhulRasal\\Desktop\\LuckyLuckiano\\plagio_core\\temp_extraccion\\7LOCO.py']
+DEBUG: Número de archivos .py encontrados: 7
+C:\Users\GhulRasal\AppData\Local\Programs\Python\Python311\Lib\site-packages\sklearn\base.py:376: InconsistentVersionWarning: Trying to unpickle estimator SVC from version 1.6.1 when using version 1.5.2. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+C:\Users\GhulRasal\AppData\Local\Programs\Python\Python311\Lib\site-packages\sklearn\base.py:376: InconsistentVersionWarning: Trying to unpickle estimator StandardScaler from version 1.6.1 when using version 1.5.2. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+C:\Users\GhulRasal\AppData\Local\Programs\Python\Python311\Lib\site-packages\sklearn\base.py:376: InconsistentVersionWarning: Trying to unpickle estimator DecisionTreeClassifier from version 1.6.1 when using version 1.5.2. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+C:\Users\GhulRasal\AppData\Local\Programs\Python\Python311\Lib\site-packages\sklearn\base.py:376: InconsistentVersionWarning: Trying to unpickle estimator RandomForestClassifier from version 1.6.1 when using version 1.5.2. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+DEBUG: Se esperan 21 combinaciones de archivos para comparar.
+DEBUG: Procesando combinación 1/21: 1.py vs 2.py
+DEBUG: Procesando combinación 2/21: 1.py vs 3.py
+DEBUG: Procesando combinación 3/21: 1.py vs 4.py
+DEBUG: Procesando combinación 4/21: 1.py vs 5.py
+DEBUG: Procesando combinación 5/21: 1.py vs 6.py
+DEBUG: Procesando combinación 6/21: 1.py vs 7LOCO.py
+DEBUG: Procesando combinación 7/21: 2.py vs 3.py
+DEBUG: Procesando combinación 8/21: 2.py vs 4.py
+DEBUG: Procesando combinación 9/21: 2.py vs 5.py
+DEBUG: Procesando combinación 10/21: 2.py vs 6.py
+DEBUG: Procesando combinación 11/21: 2.py vs 7LOCO.py
+DEBUG: Procesando combinación 12/21: 3.py vs 4.py
+DEBUG: Procesando combinación 13/21: 3.py vs 5.py
+DEBUG: Procesando combinación 14/21: 3.py vs 6.py
+DEBUG: Procesando combinación 15/21: 3.py vs 7LOCO.py
+DEBUG: Procesando combinación 16/21: 4.py vs 5.py
+DEBUG: Procesando combinación 17/21: 4.py vs 6.py
+DEBUG: Procesando combinación 18/21: 4.py vs 7LOCO.py
+DEBUG: Procesando combinación 19/21: 5.py vs 6.py
+DEBUG: Procesando combinación 20/21: 5.py vs 7LOCO.py
+DEBUG: Procesando combinación 21/21: 6.py vs 7LOCO.py
+DEBUG: Número final de DataFrames en la lista 'resultados': 21
+DEBUG: Archivo Excel 'C:\Users\GhulRasal\Desktop\LuckyLuckiano\plagio_core\resultado_clasificacion_unificado.xlsx' guardado/actualizado exitosamente.
+DEBUG: Carpeta temporal 'C:\Users\GhulRasal\Desktop\LuckyLuckiano\plagio_core\temp_extraccion' eliminada al finalizar.
+INFO: --- PROCESO DE DETECCIÓN DE PLAGIO COMPLETADO ---
+
+2025-06-05 12:55:43,490 - INFO - Archivo ZIP temporal eliminado: C:\Users\GhulRasal\Desktop\LuckyLuckiano\uploaded_zips_temp\fc310684-ea2a-4227-9dab-1c2ed16eeb92_loco.zip
+2025-06-05 12:55:43,490 - INFO - 127.0.0.1 - - [05/Jun/2025 12:55:43] "[32mPOST /upload HTTP/1.1[0m" 302 -
+2025-06-05 12:55:43,499 - INFO - 127.0.0.1 - - [05/Jun/2025 12:55:43] "GET /results HTTP/1.1" 200 -
+2025-06-05 12:55:43,694 - INFO - 127.0.0.1 - - [05/Jun/2025 12:55:43] "GET /get_excel HTTP/1.1" 200 -
+2025-06-05 12:56:37,577 - INFO - 127.0.0.1 - - [05/Jun/2025 12:56:37] "GET /results HTTP/1.1" 200 -
+2025-06-05 12:56:37,676 - INFO - 127.0.0.1 - - [05/Jun/2025 12:56:37] "[36mGET /get_excel HTTP/1.1[0m" 304 -
+2025-06-05 12:57:01,905 - INFO - 127.0.0.1 - - [05/Jun/2025 12:57:01] "GET /results HTTP/1.1" 200 -
+2025-06-05 12:57:01,988 - INFO - 127.0.0.1 - - [05/Jun/2025 12:57:01] "[36mGET /get_excel HTTP/1.1[0m" 304 -
+2025-06-05 12:58:22,797 - INFO - 127.0.0.1 - - [05/Jun/2025 12:58:22] "GET /results HTTP/1.1" 200 -
+2025-06-05 12:58:22,897 - INFO - 127.0.0.1 - - [05/Jun/2025 12:58:22] "[36mGET /get_excel HTTP/1.1[0m" 304 -
+2025-06-05 12:58:24,638 - INFO - 127.0.0.1 - - [05/Jun/2025 12:58:24] "GET /results HTTP/1.1" 200 -
+2025-06-05 12:58:24,720 - INFO - 127.0.0.1 - - [05/Jun/2025 12:58:24] "[36mGET /get_excel HTTP/1.1[0m" 304 -
+2025-06-05 12:58:31,687 - INFO - 127.0.0.1 - - [05/Jun/2025 12:58:31] "GET /results HTTP/1.1" 200 -
+2025-06-05 12:58:31,771 - INFO - 127.0.0.1 - - [05/Jun/2025 12:58:31] "[36mGET /get_excel HTTP/1.1[0m" 304 -
+2025-06-05 12:58:32,325 - INFO - 127.0.0.1 - - [05/Jun/2025 12:58:32] "GET /results HTTP/1.1" 200 -
+2025-06-05 12:58:32,403 - INFO - 127.0.0.1 - - [05/Jun/2025 12:58:32] "[36mGET /get_excel HTTP/1.1[0m" 304 -
+2025-06-05 12:59:11,754 - INFO - 127.0.0.1 - - [05/Jun/2025 12:59:11] "GET /results HTTP/1.1" 200 -
+2025-06-05 12:59:11,850 - INFO - 127.0.0.1 - - [05/Jun/2025 12:59:11] "[36mGET /get_excel HTTP/1.1[0m" 304 -
+2025-06-05 12:59:56,804 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-06-05 12:59:56,805 - INFO - [33mPress CTRL+C to quit[0m
+2025-06-05 13:00:03,834 - INFO - Archivo ZIP 'loco.zip' guardado temporalmente en 'C:\Users\GhulRasal\Desktop\LuckyLuckiano\uploaded_zips_temp\e665b0ef-24f1-420d-8f8b-b3161d9eae13_loco.zip'
+2025-06-05 13:00:06,349 - INFO - pruebas.py stdout:
+
+2025-06-05 13:00:06,349 - INFO - pruebas.py stderr:
+INFO: --- INICIO DEL SCRIPT ---
+DEBUG: Archivo ZIP 'C:\Users\GhulRasal\Desktop\LuckyLuckiano\uploaded_zips_temp\e665b0ef-24f1-420d-8f8b-b3161d9eae13_loco.zip' extraído a 'C:\Users\GhulRasal\Desktop\LuckyLuckiano\plagio_core\temp_extraccion'.
+DEBUG: Archivos .py encontrados en el ZIP (pruebas.py): ['C:\\Users\\GhulRasal\\Desktop\\LuckyLuckiano\\plagio_core\\temp_extraccion\\1.py', 'C:\\Users\\GhulRasal\\Desktop\\LuckyLuckiano\\plagio_core\\temp_extraccion\\2.py', 'C:\\Users\\GhulRasal\\Desktop\\LuckyLuckiano\\plagio_core\\temp_extraccion\\3.py', 'C:\\Users\\GhulRasal\\Desktop\\LuckyLuckiano\\plagio_core\\temp_extraccion\\4.py', 'C:\\Users\\GhulRasal\\Desktop\\LuckyLuckiano\\plagio_core\\temp_extraccion\\5.py', 'C:\\Users\\GhulRasal\\Desktop\\LuckyLuckiano\\plagio_core\\temp_extraccion\\6.py', 'C:\\Users\\GhulRasal\\Desktop\\LuckyLuckiano\\plagio_core\\temp_extraccion\\7LOCO.py']
+DEBUG: Número de archivos .py encontrados: 7
+C:\Users\GhulRasal\AppData\Local\Programs\Python\Python311\Lib\site-packages\sklearn\base.py:376: InconsistentVersionWarning: Trying to unpickle estimator SVC from version 1.6.1 when using version 1.5.2. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+C:\Users\GhulRasal\AppData\Local\Programs\Python\Python311\Lib\site-packages\sklearn\base.py:376: InconsistentVersionWarning: Trying to unpickle estimator StandardScaler from version 1.6.1 when using version 1.5.2. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+C:\Users\GhulRasal\AppData\Local\Programs\Python\Python311\Lib\site-packages\sklearn\base.py:376: InconsistentVersionWarning: Trying to unpickle estimator DecisionTreeClassifier from version 1.6.1 when using version 1.5.2. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+C:\Users\GhulRasal\AppData\Local\Programs\Python\Python311\Lib\site-packages\sklearn\base.py:376: InconsistentVersionWarning: Trying to unpickle estimator RandomForestClassifier from version 1.6.1 when using version 1.5.2. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+DEBUG: Se esperan 21 combinaciones de archivos para comparar.
+DEBUG: Procesando combinación 1/21: 1.py vs 2.py
+DEBUG: Procesando combinación 2/21: 1.py vs 3.py
+DEBUG: Procesando combinación 3/21: 1.py vs 4.py
+DEBUG: Procesando combinación 4/21: 1.py vs 5.py
+DEBUG: Procesando combinación 5/21: 1.py vs 6.py
+DEBUG: Procesando combinación 6/21: 1.py vs 7LOCO.py
+DEBUG: Procesando combinación 7/21: 2.py vs 3.py
+DEBUG: Procesando combinación 8/21: 2.py vs 4.py
+DEBUG: Procesando combinación 9/21: 2.py vs 5.py
+DEBUG: Procesando combinación 10/21: 2.py vs 6.py
+DEBUG: Procesando combinación 11/21: 2.py vs 7LOCO.py
+DEBUG: Procesando combinación 12/21: 3.py vs 4.py
+DEBUG: Procesando combinación 13/21: 3.py vs 5.py
+DEBUG: Procesando combinación 14/21: 3.py vs 6.py
+DEBUG: Procesando combinación 15/21: 3.py vs 7LOCO.py
+DEBUG: Procesando combinación 16/21: 4.py vs 5.py
+DEBUG: Procesando combinación 17/21: 4.py vs 6.py
+DEBUG: Procesando combinación 18/21: 4.py vs 7LOCO.py
+DEBUG: Procesando combinación 19/21: 5.py vs 6.py
+DEBUG: Procesando combinación 20/21: 5.py vs 7LOCO.py
+DEBUG: Procesando combinación 21/21: 6.py vs 7LOCO.py
+DEBUG: Número final de DataFrames en la lista 'resultados': 21
+DEBUG: Archivo Excel 'C:\Users\GhulRasal\Desktop\LuckyLuckiano\plagio_core\resultado_clasificacion_unificado.xlsx' guardado/actualizado exitosamente.
+DEBUG: Carpeta temporal 'C:\Users\GhulRasal\Desktop\LuckyLuckiano\plagio_core\temp_extraccion' eliminada al finalizar.
+INFO: --- PROCESO DE DETECCIÓN DE PLAGIO COMPLETADO ---
+
+2025-06-05 13:00:06,349 - INFO - Archivo ZIP temporal eliminado: C:\Users\GhulRasal\Desktop\LuckyLuckiano\uploaded_zips_temp\e665b0ef-24f1-420d-8f8b-b3161d9eae13_loco.zip
+2025-06-05 13:00:06,350 - INFO - 127.0.0.1 - - [05/Jun/2025 13:00:06] "[32mPOST /upload HTTP/1.1[0m" 302 -
+2025-06-05 13:00:06,358 - INFO - 127.0.0.1 - - [05/Jun/2025 13:00:06] "GET /results HTTP/1.1" 200 -
+2025-06-05 13:00:06,535 - INFO - 127.0.0.1 - - [05/Jun/2025 13:00:06] "GET /get_excel HTTP/1.1" 200 -
+2025-06-05 15:34:45,257 - INFO - Archivo ZIP 'loco.zip' guardado temporalmente en 'C:\Users\GhulRasal\Desktop\LuckyLuckiano\uploaded_zips_temp\5c52fe17-39c9-4960-a872-0aab27d1a79b_loco.zip'
+2025-06-05 15:34:54,895 - INFO - pruebas.py stdout:
+
+2025-06-05 15:34:54,895 - INFO - pruebas.py stderr:
+INFO: --- INICIO DEL SCRIPT ---
+DEBUG: Archivo ZIP 'C:\Users\GhulRasal\Desktop\LuckyLuckiano\uploaded_zips_temp\5c52fe17-39c9-4960-a872-0aab27d1a79b_loco.zip' extraído a 'C:\Users\GhulRasal\Desktop\LuckyLuckiano\plagio_core\temp_extraccion'.
+DEBUG: Archivos .py encontrados en el ZIP (pruebas.py): ['C:\\Users\\GhulRasal\\Desktop\\LuckyLuckiano\\plagio_core\\temp_extraccion\\1.py', 'C:\\Users\\GhulRasal\\Desktop\\LuckyLuckiano\\plagio_core\\temp_extraccion\\2.py', 'C:\\Users\\GhulRasal\\Desktop\\LuckyLuckiano\\plagio_core\\temp_extraccion\\3.py', 'C:\\Users\\GhulRasal\\Desktop\\LuckyLuckiano\\plagio_core\\temp_extraccion\\4.py', 'C:\\Users\\GhulRasal\\Desktop\\LuckyLuckiano\\plagio_core\\temp_extraccion\\5.py', 'C:\\Users\\GhulRasal\\Desktop\\LuckyLuckiano\\plagio_core\\temp_extraccion\\6.py', 'C:\\Users\\GhulRasal\\Desktop\\LuckyLuckiano\\plagio_core\\temp_extraccion\\7LOCO.py']
+DEBUG: Número de archivos .py encontrados: 7
+C:\Users\GhulRasal\AppData\Local\Programs\Python\Python311\Lib\site-packages\sklearn\base.py:376: InconsistentVersionWarning: Trying to unpickle estimator SVC from version 1.6.1 when using version 1.5.2. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+C:\Users\GhulRasal\AppData\Local\Programs\Python\Python311\Lib\site-packages\sklearn\base.py:376: InconsistentVersionWarning: Trying to unpickle estimator StandardScaler from version 1.6.1 when using version 1.5.2. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+C:\Users\GhulRasal\AppData\Local\Programs\Python\Python311\Lib\site-packages\sklearn\base.py:376: InconsistentVersionWarning: Trying to unpickle estimator DecisionTreeClassifier from version 1.6.1 when using version 1.5.2. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+C:\Users\GhulRasal\AppData\Local\Programs\Python\Python311\Lib\site-packages\sklearn\base.py:376: InconsistentVersionWarning: Trying to unpickle estimator RandomForestClassifier from version 1.6.1 when using version 1.5.2. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+DEBUG: Se esperan 21 combinaciones de archivos para comparar.
+DEBUG: Procesando combinación 1/21: 1.py vs 2.py
+DEBUG: Procesando combinación 2/21: 1.py vs 3.py
+DEBUG: Procesando combinación 3/21: 1.py vs 4.py
+DEBUG: Procesando combinación 4/21: 1.py vs 5.py
+DEBUG: Procesando combinación 5/21: 1.py vs 6.py
+DEBUG: Procesando combinación 6/21: 1.py vs 7LOCO.py
+DEBUG: Procesando combinación 7/21: 2.py vs 3.py
+DEBUG: Procesando combinación 8/21: 2.py vs 4.py
+DEBUG: Procesando combinación 9/21: 2.py vs 5.py
+DEBUG: Procesando combinación 10/21: 2.py vs 6.py
+DEBUG: Procesando combinación 11/21: 2.py vs 7LOCO.py
+DEBUG: Procesando combinación 12/21: 3.py vs 4.py
+DEBUG: Procesando combinación 13/21: 3.py vs 5.py
+DEBUG: Procesando combinación 14/21: 3.py vs 6.py
+DEBUG: Procesando combinación 15/21: 3.py vs 7LOCO.py
+DEBUG: Procesando combinación 16/21: 4.py vs 5.py
+DEBUG: Procesando combinación 17/21: 4.py vs 6.py
+DEBUG: Procesando combinación 18/21: 4.py vs 7LOCO.py
+DEBUG: Procesando combinación 19/21: 5.py vs 6.py
+DEBUG: Procesando combinación 20/21: 5.py vs 7LOCO.py
+DEBUG: Procesando combinación 21/21: 6.py vs 7LOCO.py
+DEBUG: Número final de DataFrames en la lista 'resultados': 21
+DEBUG: Archivo Excel 'C:\Users\GhulRasal\Desktop\LuckyLuckiano\plagio_core\resultado_clasificacion_unificado.xlsx' guardado/actualizado exitosamente.
+DEBUG: Carpeta temporal 'C:\Users\GhulRasal\Desktop\LuckyLuckiano\plagio_core\temp_extraccion' eliminada al finalizar.
+INFO: --- PROCESO DE DETECCIÓN DE PLAGIO COMPLETADO ---
+
+2025-06-05 15:34:54,896 - INFO - Archivo ZIP temporal eliminado: C:\Users\GhulRasal\Desktop\LuckyLuckiano\uploaded_zips_temp\5c52fe17-39c9-4960-a872-0aab27d1a79b_loco.zip
+2025-06-05 15:34:54,898 - INFO - 127.0.0.1 - - [05/Jun/2025 15:34:54] "[32mPOST /upload HTTP/1.1[0m" 302 -
+2025-06-05 15:34:54,905 - INFO - 127.0.0.1 - - [05/Jun/2025 15:34:54] "GET /results HTTP/1.1" 200 -
+2025-06-05 15:34:55,088 - INFO - 127.0.0.1 - - [05/Jun/2025 15:34:55] "GET /get_excel HTTP/1.1" 200 -
+2025-06-05 15:50:39,168 - INFO - Archivo ZIP 'loco.zip' guardado temporalmente en 'C:\Users\GhulRasal\Desktop\LuckyLuckiano\uploaded_zips_temp\2948c3cb-0036-4eef-ad1f-3edfdfe88785_loco.zip'
+2025-06-05 15:50:41,663 - INFO - pruebas.py stdout:
+
+2025-06-05 15:50:41,663 - INFO - pruebas.py stderr:
+INFO: --- INICIO DEL SCRIPT ---
+DEBUG: Archivo ZIP 'C:\Users\GhulRasal\Desktop\LuckyLuckiano\uploaded_zips_temp\2948c3cb-0036-4eef-ad1f-3edfdfe88785_loco.zip' extraído a 'C:\Users\GhulRasal\Desktop\LuckyLuckiano\plagio_core\temp_extraccion'.
+DEBUG: Archivos .py encontrados en el ZIP (pruebas.py): ['C:\\Users\\GhulRasal\\Desktop\\LuckyLuckiano\\plagio_core\\temp_extraccion\\1.py', 'C:\\Users\\GhulRasal\\Desktop\\LuckyLuckiano\\plagio_core\\temp_extraccion\\2.py', 'C:\\Users\\GhulRasal\\Desktop\\LuckyLuckiano\\plagio_core\\temp_extraccion\\3.py', 'C:\\Users\\GhulRasal\\Desktop\\LuckyLuckiano\\plagio_core\\temp_extraccion\\4.py', 'C:\\Users\\GhulRasal\\Desktop\\LuckyLuckiano\\plagio_core\\temp_extraccion\\5.py', 'C:\\Users\\GhulRasal\\Desktop\\LuckyLuckiano\\plagio_core\\temp_extraccion\\6.py', 'C:\\Users\\GhulRasal\\Desktop\\LuckyLuckiano\\plagio_core\\temp_extraccion\\7LOCO.py']
+DEBUG: Número de archivos .py encontrados: 7
+C:\Users\GhulRasal\AppData\Local\Programs\Python\Python311\Lib\site-packages\sklearn\base.py:376: InconsistentVersionWarning: Trying to unpickle estimator SVC from version 1.6.1 when using version 1.5.2. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+C:\Users\GhulRasal\AppData\Local\Programs\Python\Python311\Lib\site-packages\sklearn\base.py:376: InconsistentVersionWarning: Trying to unpickle estimator StandardScaler from version 1.6.1 when using version 1.5.2. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+C:\Users\GhulRasal\AppData\Local\Programs\Python\Python311\Lib\site-packages\sklearn\base.py:376: InconsistentVersionWarning: Trying to unpickle estimator DecisionTreeClassifier from version 1.6.1 when using version 1.5.2. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+C:\Users\GhulRasal\AppData\Local\Programs\Python\Python311\Lib\site-packages\sklearn\base.py:376: InconsistentVersionWarning: Trying to unpickle estimator RandomForestClassifier from version 1.6.1 when using version 1.5.2. This might lead to breaking code or invalid results. Use at your own risk. For more info please refer to:
+https://scikit-learn.org/stable/model_persistence.html#security-maintainability-limitations
+  warnings.warn(
+DEBUG: Se esperan 21 combinaciones de archivos para comparar.
+DEBUG: Procesando combinación 1/21: 1.py vs 2.py
+DEBUG: Procesando combinación 2/21: 1.py vs 3.py
+DEBUG: Procesando combinación 3/21: 1.py vs 4.py
+DEBUG: Procesando combinación 4/21: 1.py vs 5.py
+DEBUG: Procesando combinación 5/21: 1.py vs 6.py
+DEBUG: Procesando combinación 6/21: 1.py vs 7LOCO.py
+DEBUG: Procesando combinación 7/21: 2.py vs 3.py
+DEBUG: Procesando combinación 8/21: 2.py vs 4.py
+DEBUG: Procesando combinación 9/21: 2.py vs 5.py
+DEBUG: Procesando combinación 10/21: 2.py vs 6.py
+DEBUG: Procesando combinación 11/21: 2.py vs 7LOCO.py
+DEBUG: Procesando combinación 12/21: 3.py vs 4.py
+DEBUG: Procesando combinación 13/21: 3.py vs 5.py
+DEBUG: Procesando combinación 14/21: 3.py vs 6.py
+DEBUG: Procesando combinación 15/21: 3.py vs 7LOCO.py
+DEBUG: Procesando combinación 16/21: 4.py vs 5.py
+DEBUG: Procesando combinación 17/21: 4.py vs 6.py
+DEBUG: Procesando combinación 18/21: 4.py vs 7LOCO.py
+DEBUG: Procesando combinación 19/21: 5.py vs 6.py
+DEBUG: Procesando combinación 20/21: 5.py vs 7LOCO.py
+DEBUG: Procesando combinación 21/21: 6.py vs 7LOCO.py
+DEBUG: Número final de DataFrames en la lista 'resultados': 21
+DEBUG: Archivo Excel 'C:\Users\GhulRasal\Desktop\LuckyLuckiano\plagio_core\resultado_clasificacion_unificado.xlsx' guardado/actualizado exitosamente.
+DEBUG: Carpeta temporal 'C:\Users\GhulRasal\Desktop\LuckyLuckiano\plagio_core\temp_extraccion' eliminada al finalizar.
+INFO: --- PROCESO DE DETECCIÓN DE PLAGIO COMPLETADO ---
+
+2025-06-05 15:50:41,664 - INFO - Archivo ZIP temporal eliminado: C:\Users\GhulRasal\Desktop\LuckyLuckiano\uploaded_zips_temp\2948c3cb-0036-4eef-ad1f-3edfdfe88785_loco.zip
+2025-06-05 15:50:41,664 - INFO - 127.0.0.1 - - [05/Jun/2025 15:50:41] "[32mPOST /upload HTTP/1.1[0m" 302 -
+2025-06-05 15:50:41,669 - INFO - 127.0.0.1 - - [05/Jun/2025 15:50:41] "GET /results HTTP/1.1" 200 -
+2025-06-05 15:50:41,779 - INFO - 127.0.0.1 - - [05/Jun/2025 15:50:41] "GET /get_excel HTTP/1.1" 200 -
